@@ -40,7 +40,7 @@ import static internal.nbbrd.design.proc.Processors.*;
 public final class BuilderPatternProcessor extends AbstractProcessor {
 
     private final Processing<TypeElement> processing = Processing
-            .<TypeElement>builder()
+            .onType()
             .check(HAS_BUILD_METHOD)
             .build();
 

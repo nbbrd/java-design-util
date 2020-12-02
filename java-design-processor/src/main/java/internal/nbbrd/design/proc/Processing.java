@@ -1,17 +1,17 @@
 /*
  * Copyright 2019 National Bank of Belgium
- * 
- * Licensed under the EUPL, Version 1.1 or - as soon they will be approved 
+ *
+ * Licensed under the EUPL, Version 1.1 or - as soon they will be approved
  * by the European Commission - subsequent versions of the EUPL (the "Licence");
  * You may not use this work except in compliance with the Licence.
  * You may obtain a copy of the Licence at:
- * 
+ *
  * http://ec.europa.eu/idabc/eupl
- * 
- * Unless required by applicable law or agreed to in writing, software 
+ *
+ * Unless required by applicable law or agreed to in writing, software
  * distributed under the Licence is distributed on an "AS IS" basis,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the Licence for the specific language governing permissions and 
+ * See the Licence for the specific language governing permissions and
  * limitations under the Licence.
  */
 package internal.nbbrd.design.proc;
@@ -27,11 +27,10 @@ import java.util.List;
 import java.util.Set;
 
 /**
- *
- * @author Philippe Charles
  * @param <T>
+ * @author Philippe Charles
  */
-@lombok.Builder
+@lombok.Builder(builderClassName = "Builder")
 public final class Processing<T extends Element> {
 
     @lombok.Singular
@@ -49,7 +48,12 @@ public final class Processing<T extends Element> {
     }
 
     private void checkAll(T element, ProcessingEnvironment env) {
-        checks.forEach(check -> check.check(env, element));
+        checks.forEach(check -> {
+            String result = check.check(env, element);
+            if (result != null) {
+                env.getMessager().printMessage(Diagnostic.Kind.ERROR, result, element);
+            }
+        });
     }
 
     private boolean isSkipRequired(Element element, ProcessingEnvironment env) {
@@ -64,5 +68,9 @@ public final class Processing<T extends Element> {
 //            }
         }
         return false;
+    }
+
+    public static Builder<TypeElement> onType() {
+        return new Builder<TypeElement>();
     }
 }

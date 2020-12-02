@@ -25,10 +25,14 @@ import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.SourceVersion;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import java.util.Set;
 
-import static internal.nbbrd.design.proc.Check.*;
+import static internal.nbbrd.design.proc.Check.is;
+import static javax.lang.model.element.Modifier.FINAL;
 
 /**
  * @author Philippe Charles
@@ -38,8 +42,8 @@ import static internal.nbbrd.design.proc.Check.*;
 public final class DirectImplProcessor extends AbstractProcessor {
 
     private final Processing<TypeElement> processing = Processing
-            .<TypeElement>builder()
-            .check(IS_FINAL)
+            .onType()
+            .check(is(FINAL))
             .check(DO_NOT_EXTEND_CLASS)
             .check(DO_NOT_CONTAIN_PUBLIC_VARS)
             .check(EXTEND_AT_LEAST_ONE_INTERFACE)
@@ -55,6 +59,9 @@ public final class DirectImplProcessor extends AbstractProcessor {
         return processing.process(annotations, roundEnv, processingEnv);
     }
 
+    private static final Check<TypeElement> DO_NOT_EXTEND_CLASS = Check.of(DirectImplProcessor::doNotExtendClass, "'%s' may not extend another class");
+    private static final Check<TypeElement> DO_NOT_CONTAIN_PUBLIC_VARS = Check.of(DirectImplProcessor::doNotContainPublicVars, "'%s' may not contain public vars");
+
     private static final Check EXTEND_AT_LEAST_ONE_INTERFACE = Check.of(
             DirectImplProcessor::extendAtLeastOneInterface,
             "'%s' must extend at least one interface"
@@ -62,5 +69,20 @@ public final class DirectImplProcessor extends AbstractProcessor {
 
     private static boolean extendAtLeastOneInterface(TypeElement type) {
         return !type.getInterfaces().isEmpty();
+    }
+
+    private static boolean doNotExtendClass(TypeElement type) {
+        return type.getSuperclass().toString().equals(Object.class.getName());
+    }
+
+    private static boolean doNotContainPublicVars(TypeElement type) {
+        return type.getEnclosedElements().stream().noneMatch(DirectImplProcessor::isVariableNotStaticButPublic);
+    }
+
+    private static boolean isVariableNotStaticButPublic(Element e) {
+        Set<Modifier> modifiers = e.getModifiers();
+        return e instanceof VariableElement
+                && !modifiers.contains(Modifier.STATIC)
+                && modifiers.contains(Modifier.PUBLIC);
     }
 }

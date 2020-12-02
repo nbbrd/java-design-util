@@ -29,8 +29,9 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import java.util.Set;
 
-import static internal.nbbrd.design.proc.Check.IS_FINAL;
+import static internal.nbbrd.design.proc.Check.is;
 import static internal.nbbrd.design.proc.Processors.getNonStaticFields;
+import static javax.lang.model.element.Modifier.*;
 
 /**
  * @author Philippe Charles
@@ -40,8 +41,8 @@ import static internal.nbbrd.design.proc.Processors.getNonStaticFields;
 public final class ImmutableProcessor extends AbstractProcessor {
 
     private final Processing<TypeElement> processing = Processing
-            .<TypeElement>builder()
-            .check(IS_FINAL)
+            .onType()
+            .check(is(FINAL))
             .check(ARE_FIELDS_FINAL_OR_LAZY)
             .check(ARE_FIELDS_PRIVATE)
             .check(HAS_LAZY_FIELD_IF_LAZY)
@@ -63,15 +64,15 @@ public final class ImmutableProcessor extends AbstractProcessor {
 
     private static boolean areFieldsFinalOrLazy(TypeElement type) {
         boolean lazy = type.getAnnotation(Immutable.class).lazy();
-        return getNonStaticFields(type).allMatch(field -> Check.isFinal(field) || (lazy && Check.isVolatile(field)));
+        return getNonStaticFields(type).allMatch(field -> field.getModifiers().contains(FINAL) || (lazy && field.getModifiers().contains(VOLATILE)));
     }
 
     private static boolean areFieldsPrivate(TypeElement type) {
-        return getNonStaticFields(type).allMatch(Check::isPrivate);
+        return getNonStaticFields(type).allMatch(field -> field.getModifiers().contains(PRIVATE));
     }
 
     private static boolean hasLazyFieldIfLazy(TypeElement type) {
         boolean lazy = type.getAnnotation(Immutable.class).lazy();
-        return !lazy || getNonStaticFields(type).anyMatch(Check::isVolatile);
+        return !lazy || getNonStaticFields(type).anyMatch(field -> field.getModifiers().contains(VOLATILE));
     }
 }

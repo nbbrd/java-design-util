@@ -49,12 +49,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.jooq</groupId>
-            <artifactId>joor-java-8</artifactId>
-            <version>0.9.13</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>com.google.testing.compile</groupId>
             <artifactId>compile-testing</artifactId>
             <version>0.19</version>
