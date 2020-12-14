@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 National Bank of Belgium
+ * Copyright 2020 National Bank of Belgium
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved
  * by the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -16,17 +16,23 @@
  */
 package nbbrd.design;
 
-import java.lang.annotation.*;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
+ * Class that can be represented unambiguously by a String.
+ * Such class must have a static factory method that accepts unique CharSequence parameter
+ * and that doesn't throw a checked exception.
+ *
  * @author Philippe Charles
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.SOURCE)
-@Documented
-public @interface BuilderPattern {
+public @interface StringValue {
 
-    Class<?> value();
+    String parseMethodName() default "parse";
 
-    String buildMethodName() default "build";
+    String formatMethodName() default "toString";
 }

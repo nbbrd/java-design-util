@@ -16,8 +16,8 @@
  */
 package internal.nbbrd.design;
 
-import internal.nbbrd.design.proc.Check;
 import internal.nbbrd.design.proc.Processing;
+import internal.nbbrd.design.proc.Rule;
 import nbbrd.design.MightBePromoted;
 import nbbrd.service.ServiceProvider;
 
@@ -36,11 +36,6 @@ import java.util.Set;
 @SupportedAnnotationTypes("nbbrd.design.MightBePromoted")
 public final class MightBePromotedProcessor extends AbstractProcessor {
 
-    private final Processing<Element> processing = Processing
-            .builder()
-            .check(INTERNAL_OR_NOT_PUBLIC)
-            .build();
-
     @Override
     public SourceVersion getSupportedSourceVersion() {
         return SourceVersion.latestSupported();
@@ -48,13 +43,8 @@ public final class MightBePromotedProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        return processing.process(annotations, roundEnv, processingEnv);
+        return Processing.of(IS_MIGHT_BE_PROMOTED).process(annotations, roundEnv, processingEnv);
     }
-
-    private static final Check<Element> INTERNAL_OR_NOT_PUBLIC = Check.of(
-            MightBePromotedProcessor::isInternalOrNotPublic,
-            "'%s' must be in internal package or not public"
-    );
 
     private static boolean isInternalOrNotPublic(ProcessingEnvironment env, Element element) {
         return isTypeInInternalPackage(env, element) || isNotPublic(env, element);
@@ -74,4 +64,9 @@ public final class MightBePromotedProcessor extends AbstractProcessor {
     public static boolean isNotPublic(ProcessingEnvironment env, Element element) {
         return !element.getModifiers().contains(Modifier.PUBLIC);
     }
+
+    private static final Rule<Element> INTERNAL_OR_NOT_PUBLIC = Rule.of(MightBePromotedProcessor::isInternalOrNotPublic, "'%s' must be in internal package or not public");
+
+    private static final Rule<Element> IS_MIGHT_BE_PROMOTED = Rule.on(Element.class)
+            .and(INTERNAL_OR_NOT_PUBLIC);
 }

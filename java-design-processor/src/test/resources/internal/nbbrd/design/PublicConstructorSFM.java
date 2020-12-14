@@ -6,7 +6,7 @@ import nbbrd.design.StaticFactoryMethod;
 public class PublicConstructorSFM {
 
     @StaticFactoryMethod
-    static PublicConstructorSFM make() {
+    public static PublicConstructorSFM make() {
         return new PublicConstructorSFM();
     }
 

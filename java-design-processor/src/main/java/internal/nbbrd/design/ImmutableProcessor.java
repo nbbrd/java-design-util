@@ -16,8 +16,8 @@
  */
 package internal.nbbrd.design;
 
-import internal.nbbrd.design.proc.Check;
 import internal.nbbrd.design.proc.Processing;
+import internal.nbbrd.design.proc.Rule;
 import nbbrd.design.Immutable;
 import nbbrd.service.ServiceProvider;
 
@@ -27,10 +27,12 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import java.util.Set;
+import java.util.stream.Stream;
 
-import static internal.nbbrd.design.proc.Check.is;
-import static internal.nbbrd.design.proc.Processors.getNonStaticFields;
+import static internal.nbbrd.design.proc.Elements2.fieldsIn;
+import static internal.nbbrd.design.proc.Rule.is;
 import static javax.lang.model.element.Modifier.*;
 
 /**
@@ -40,14 +42,6 @@ import static javax.lang.model.element.Modifier.*;
 @SupportedAnnotationTypes("nbbrd.design.Immutable")
 public final class ImmutableProcessor extends AbstractProcessor {
 
-    private final Processing<TypeElement> processing = Processing
-            .onType()
-            .check(is(FINAL))
-            .check(ARE_FIELDS_FINAL_OR_LAZY)
-            .check(ARE_FIELDS_PRIVATE)
-            .check(HAS_LAZY_FIELD_IF_LAZY)
-            .build();
-
     @Override
     public SourceVersion getSupportedSourceVersion() {
         return SourceVersion.latestSupported();
@@ -55,12 +49,8 @@ public final class ImmutableProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        return processing.process(annotations, roundEnv, processingEnv);
+        return Processing.of(IS_IMMUTABLE).process(annotations, roundEnv, processingEnv);
     }
-
-    private static final Check<TypeElement> ARE_FIELDS_FINAL_OR_LAZY = Check.of(ImmutableProcessor::areFieldsFinalOrLazy, "Fields of '%s' must be final or lazy");
-    private static final Check<TypeElement> ARE_FIELDS_PRIVATE = Check.of(ImmutableProcessor::areFieldsPrivate, "Fields of '%s' must be private");
-    private static final Check<TypeElement> HAS_LAZY_FIELD_IF_LAZY = Check.of(ImmutableProcessor::hasLazyFieldIfLazy, "'%s' must have at least one lazy field");
 
     private static boolean areFieldsFinalOrLazy(TypeElement type) {
         boolean lazy = type.getAnnotation(Immutable.class).lazy();
@@ -75,4 +65,18 @@ public final class ImmutableProcessor extends AbstractProcessor {
         boolean lazy = type.getAnnotation(Immutable.class).lazy();
         return !lazy || getNonStaticFields(type).anyMatch(field -> field.getModifiers().contains(VOLATILE));
     }
+
+    private static Stream<VariableElement> getNonStaticFields(TypeElement type) {
+        return fieldsIn(type).filter(field -> !field.getModifiers().contains(STATIC));
+    }
+
+    private static final Rule<TypeElement> ARE_FIELDS_FINAL_OR_LAZY = Rule.of(ImmutableProcessor::areFieldsFinalOrLazy, "Fields of '%s' must be final or lazy");
+    private static final Rule<TypeElement> ARE_FIELDS_PRIVATE = Rule.of(ImmutableProcessor::areFieldsPrivate, "Fields of '%s' must be private");
+    private static final Rule<TypeElement> HAS_LAZY_FIELD_IF_LAZY = Rule.of(ImmutableProcessor::hasLazyFieldIfLazy, "'%s' must have at least one lazy field");
+
+    private static final Rule<TypeElement> IS_IMMUTABLE = Rule.on(TypeElement.class)
+            .and(is(FINAL))
+            .and(ARE_FIELDS_FINAL_OR_LAZY)
+            .and(ARE_FIELDS_PRIVATE)
+            .and(HAS_LAZY_FIELD_IF_LAZY);
 }

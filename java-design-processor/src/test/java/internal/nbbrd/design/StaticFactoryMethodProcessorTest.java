@@ -57,7 +57,7 @@ public class StaticFactoryMethodProcessorTest {
                 .failed();
 
         assertThat(compilation)
-                .hadErrorContaining("return type cannot have public constructors")
+                .hadErrorContaining("cannot have public constructors")
                 .inFile(file)
                 .onLine(9);
     }

@@ -16,14 +16,15 @@
  */
 package internal.nbbrd.design.proc;
 
+import lombok.AccessLevel;
 import nbbrd.design.SkipProcessing;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
-import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -31,11 +32,15 @@ import java.util.Set;
  * @param <T>
  * @author Philippe Charles
  */
-@lombok.Builder(builderClassName = "Builder")
+@lombok.AllArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Processing<T extends Element> {
 
+    public static <X extends Element> Processing<X> of(Rule<X>... rules) {
+        return new Processing<X>(Arrays.asList(rules));
+    }
+
     @lombok.Singular
-    private final List<Check<? super T>> checks;
+    private final List<Rule<? super T>> checks;
 
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv, ProcessingEnvironment env) {
         if (roundEnv.processingOver()) {
@@ -69,13 +74,5 @@ public final class Processing<T extends Element> {
 //            }
         }
         return false;
-    }
-
-    public static Builder<TypeElement> onType() {
-        return new Builder<TypeElement>();
-    }
-
-    public static Builder<ExecutableElement> onExecutable() {
-        return new Builder<ExecutableElement>();
     }
 }

@@ -16,8 +16,8 @@
  */
 package internal.nbbrd.design;
 
-import internal.nbbrd.design.proc.Check;
 import internal.nbbrd.design.proc.Processing;
+import internal.nbbrd.design.proc.Rule;
 import nbbrd.service.ServiceProvider;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -25,13 +25,14 @@ import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.SourceVersion;
-import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import java.util.Set;
 
-import static internal.nbbrd.design.proc.Check.is;
+import static internal.nbbrd.design.proc.Elements2.fieldsIn;
+import static internal.nbbrd.design.proc.Rule.is;
+import static internal.nbbrd.design.proc.Rule.of;
 import static javax.lang.model.element.Modifier.FINAL;
 
 /**
@@ -41,14 +42,6 @@ import static javax.lang.model.element.Modifier.FINAL;
 @SupportedAnnotationTypes("nbbrd.design.DirectImpl")
 public final class DirectImplProcessor extends AbstractProcessor {
 
-    private final Processing<TypeElement> processing = Processing
-            .onType()
-            .check(is(FINAL))
-            .check(DO_NOT_EXTEND_CLASS)
-            .check(DO_NOT_CONTAIN_PUBLIC_VARS)
-            .check(EXTEND_AT_LEAST_ONE_INTERFACE)
-            .build();
-
     @Override
     public SourceVersion getSupportedSourceVersion() {
         return SourceVersion.latestSupported();
@@ -56,16 +49,8 @@ public final class DirectImplProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        return processing.process(annotations, roundEnv, processingEnv);
+        return Processing.of(IS_DIRECT_IMPL).process(annotations, roundEnv, processingEnv);
     }
-
-    private static final Check<TypeElement> DO_NOT_EXTEND_CLASS = Check.of(DirectImplProcessor::doNotExtendClass, "'%s' may not extend another class");
-    private static final Check<TypeElement> DO_NOT_CONTAIN_PUBLIC_VARS = Check.of(DirectImplProcessor::doNotContainPublicVars, "'%s' may not contain public vars");
-
-    private static final Check EXTEND_AT_LEAST_ONE_INTERFACE = Check.of(
-            DirectImplProcessor::extendAtLeastOneInterface,
-            "'%s' must extend at least one interface"
-    );
 
     private static boolean extendAtLeastOneInterface(TypeElement type) {
         return !type.getInterfaces().isEmpty();
@@ -76,13 +61,18 @@ public final class DirectImplProcessor extends AbstractProcessor {
     }
 
     private static boolean doNotContainPublicVars(TypeElement type) {
-        return type.getEnclosedElements().stream().noneMatch(DirectImplProcessor::isVariableNotStaticButPublic);
+        return fieldsIn(type).noneMatch(DirectImplProcessor::isVariableNotStaticButPublic);
     }
 
-    private static boolean isVariableNotStaticButPublic(Element e) {
+    private static boolean isVariableNotStaticButPublic(VariableElement e) {
         Set<Modifier> modifiers = e.getModifiers();
-        return e instanceof VariableElement
-                && !modifiers.contains(Modifier.STATIC)
+        return !modifiers.contains(Modifier.STATIC)
                 && modifiers.contains(Modifier.PUBLIC);
     }
+
+    private static final Rule<TypeElement> IS_DIRECT_IMPL = Rule.on(TypeElement.class)
+            .and(is(FINAL))
+            .and(of(DirectImplProcessor::doNotExtendClass, "'%s' may not extend another class"))
+            .and(of(DirectImplProcessor::doNotContainPublicVars, "'%s' may not contain public vars"))
+            .and(of(DirectImplProcessor::extendAtLeastOneInterface, "'%s' must extend at least one interface"));
 }
