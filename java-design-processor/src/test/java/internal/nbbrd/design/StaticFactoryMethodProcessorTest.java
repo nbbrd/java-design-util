@@ -21,6 +21,15 @@ public class StaticFactoryMethodProcessorTest {
     }
 
     @Test
+    public void testErasure() {
+        JavaFileObject file = JavaFileObjects.forResource("internal/nbbrd/design/ErasureSFM.java");
+        Compilation compilation = compile(file);
+
+        CompilationSubject.assertThat(compilation)
+                .succeededWithoutWarnings();
+    }
+
+    @Test
     public void testNonStatic() {
         JavaFileObject file = JavaFileObjects.forResource("internal/nbbrd/design/NonStaticMethodSFM.java");
         Compilation compilation = compile(file);

@@ -6,6 +6,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Types;
 import java.util.List;
 
 import static internal.nbbrd.design.proc.Rule.of;
@@ -71,9 +72,10 @@ public class ExecutableRules {
     }
 
     private static boolean returnsEnclosing(ProcessingEnvironment env, ExecutableElement type) {
+        Types types = env.getTypeUtils();
         TypeMirror expected = type.getEnclosingElement().asType();
         TypeMirror found = type.getReturnType();
-        return env.getTypeUtils().isSameType(expected, found);
+        return types.isSameType(types.erasure(expected), types.erasure(found));
     }
 
     private static String returnsTypeThat(ProcessingEnvironment env, ExecutableElement type, Rule<? super TypeElement> rule) {
