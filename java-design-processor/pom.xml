@@ -12,6 +12,10 @@
     <artifactId>java-design-processor</artifactId>
     <packaging>jar</packaging>
 
+    <name>java-design-processor</name>
+    <description>Java design utilities - Processor</description>
+    <url>https://github.com/nbbrd/java-design-util</url>
+
     <dependencies>
         <!-- compile only -->
         <dependency>

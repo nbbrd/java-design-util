@@ -11,6 +11,10 @@
     <artifactId>java-design-annotation</artifactId>
     <packaging>jar</packaging>
 
+    <name>java-design-annotation</name>
+    <description>Java design utilities - Annotation</description>
+    <url>https://github.com/nbbrd/java-design-util</url>
+
     <build>
         <plugins>
             <plugin>
