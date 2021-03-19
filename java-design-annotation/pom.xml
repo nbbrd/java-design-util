@@ -3,13 +3,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>be.nbb.rd</groupId>
+        <groupId>com.github.nbbrd.java-design-util</groupId>
         <artifactId>java-design-parent</artifactId>
-        <version>1.1.2</version>
+        <version>1.1.3</version>
     </parent>
 
     <artifactId>java-design-annotation</artifactId>
     <packaging>jar</packaging>
+
+    <name>java-design-annotation</name>
+    <description>Java design utilities - Annotation</description>
+    <url>https://github.com/nbbrd/java-design-util</url>
 
     <build>
         <plugins>
