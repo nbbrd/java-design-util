@@ -5,13 +5,10 @@ import nbbrd.design.StringValue;
 import java.time.format.DateTimeParseException;
 
 @StringValue
-public class ValidSV {
+public class StringValueValid {
 
-    public static ValidSV parse(CharSequence text) throws DateTimeParseException {
-        return new ValidSV();
-    }
-
-    private ValidSV() {
+    public static StringValueValid parse(CharSequence text) throws DateTimeParseException {
+        return new StringValueValid();
     }
 
     @Override

@@ -2,6 +2,7 @@ package internal.nbbrd.design.proc;
 
 import javax.lang.model.element.*;
 import javax.lang.model.util.ElementFilter;
+import java.lang.annotation.Annotation;
 import java.util.stream.Stream;
 
 @lombok.experimental.UtilityClass
@@ -17,6 +18,10 @@ public class Elements2 {
 
     public static boolean is(Element e, ElementKind kind) {
         return e.getKind().equals(kind);
+    }
+
+    public static boolean hasAnnotation(Element e, Class<? extends Annotation> annotationType) {
+        return e.getAnnotation(annotationType) != null;
     }
 
     public static Stream<ExecutableElement> constructorsIn(TypeElement type) {

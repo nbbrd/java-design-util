@@ -3,13 +3,10 @@ package internal.nbbrd.design;
 import nbbrd.design.StringValue;
 
 @StringValue(parseMethodName = "make")
-public class AlternateParserSV {
+public class StringValueAlternateParser {
 
-    public static AlternateParserSV make(CharSequence text) {
-        return new AlternateParserSV();
-    }
-
-    private AlternateParserSV() {
+    public static StringValueAlternateParser make(CharSequence text) {
+        return new StringValueAlternateParser();
     }
 
     @Override
