@@ -22,6 +22,10 @@ public class ExecutableRules {
         return (env, m) -> hasParametersThat(env, m, rules);
     }
 
+    public static Rule<ExecutableElement> hasParametersThat3(Rule<? super TypeMirror>... rules) {
+        return (env, m) -> hasParametersThat3(env, m, rules);
+    }
+
     public static Rule<ExecutableElement> hasAllParametersThat(Rule<? super VariableElement> rule) {
         return (env, m) -> hasAllParametersThat(env, m, rule);
     }
@@ -49,6 +53,20 @@ public class ExecutableRules {
         List<? extends VariableElement> params = method.getParameters();
         for (int i = 0; i < params.size(); i++) {
             String result = rules[i].check(env, params.get(i));
+            if (result != null) {
+                return result;
+            }
+        }
+        return null;
+    }
+
+    private static String hasParametersThat3(ProcessingEnvironment env, ExecutableElement method, Rule<? super TypeMirror>... rules) {
+        if (method.getParameters().size() != rules.length) {
+            return "'%s' must have " + rules.length + " parameters";
+        }
+        List<? extends VariableElement> params = method.getParameters();
+        for (int i = 0; i < params.size(); i++) {
+            String result = rules[i].check(env, params.get(i).asType());
             if (result != null) {
                 return result;
             }

@@ -1,8 +1,12 @@
 package internal.nbbrd.design;
 
+import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.TypeName;
 import internal.nbbrd.design.proc.Elements2;
 import internal.nbbrd.design.proc.Processing;
+import internal.nbbrd.design.proc.Processors;
 import internal.nbbrd.design.proc.Rule;
+import nbbrd.design.RepresentableAs;
 import nbbrd.design.RepresentableAsInt;
 import nbbrd.design.RepresentableAsString;
 import nbbrd.design.StringValue;
@@ -12,9 +16,13 @@ import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.MirroredTypeException;
+import javax.lang.model.type.TypeMirror;
 import java.lang.annotation.Annotation;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static internal.nbbrd.design.proc.Elements2.methodsIn;
 import static internal.nbbrd.design.proc.ExecutableRules.*;
@@ -25,6 +33,7 @@ import static javax.lang.model.element.Modifier.STATIC;
 @ServiceProvider(Processor.class)
 @SupportedAnnotationTypes({
         "nbbrd.design.StringValue",
+        "nbbrd.design.RepresentableAs",
         "nbbrd.design.RepresentableAsInt",
         "nbbrd.design.RepresentableAsString"
 })
@@ -32,26 +41,34 @@ public final class RepresentableProcessor extends AbstractProcessor {
 
     private static final Rule<TypeElement> IS_STRING_VALUE = RepresentableRule
             .builder(StringValue.class)
-            .parseType(CharSequence.class)
-            .parseMethod(StringValue::parseMethodName)
-            .formatType(String.class)
-            .formatMethod(StringValue::formatMethodName)
+            .parseType(o -> CharSequence.class)
+            .parseMethodName(StringValue::parseMethodName)
+            .formatType(o -> String.class)
+            .formatMethodName(StringValue::formatMethodName)
             .build();
 
     private static final Rule<TypeElement> IS_INT = RepresentableRule
             .builder(RepresentableAsInt.class)
-            .parseType(int.class)
-            .parseMethod(RepresentableAsInt::parseMethodName)
-            .formatType(int.class)
-            .formatMethod(RepresentableAsInt::formatMethodName)
+            .parseType(o -> int.class)
+            .parseMethodName(RepresentableAsInt::parseMethodName)
+            .formatType(o -> int.class)
+            .formatMethodName(RepresentableAsInt::formatMethodName)
             .build();
 
     private static final Rule<TypeElement> IS_STRING = RepresentableRule
             .builder(RepresentableAsString.class)
-            .parseType(CharSequence.class)
-            .parseMethod(RepresentableAsString::parseMethodName)
-            .formatType(String.class)
-            .formatMethod(RepresentableAsString::formatMethodName)
+            .parseType(o -> CharSequence.class)
+            .parseMethodName(RepresentableAsString::parseMethodName)
+            .formatType(o -> String.class)
+            .formatMethodName(RepresentableAsString::formatMethodName)
+            .build();
+
+    private static final Rule<TypeElement> IS_TYPE = RepresentableRule
+            .builder(RepresentableAs.class)
+            .parseType(RepresentableAs::value)
+            .parseMethodName(RepresentableAs::parseMethodName)
+            .formatType(RepresentableAs::value)
+            .formatMethodName(RepresentableAs::formatMethodName)
             .build();
 
     @Override
@@ -62,7 +79,7 @@ public final class RepresentableProcessor extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         return Processing
-                .of(IS_STRING_VALUE, IS_INT, IS_STRING)
+                .of(IS_STRING_VALUE, IS_INT, IS_STRING, IS_TYPE)
                 .process(annotations, roundEnv, processingEnv);
     }
 
@@ -74,50 +91,98 @@ public final class RepresentableProcessor extends AbstractProcessor {
         }
 
         private final Class<A> annotationType;
-        private final Class<?> parseType;
-        private final Class<?> formatType;
-        private final Function<A, String> parseMethod;
-        private final Function<A, String> formatMethod;
+        private final Function<A, Class<?>> parseType;
+        private final Function<A, Class<?>> formatType;
+        private final Function<A, String> parseMethodName;
+        private final Function<A, String> formatMethodName;
 
-        private boolean hasParseMethod(ProcessingEnvironment env, TypeElement type) {
-            A annotation = type.getAnnotation(annotationType);
-            Rule<ExecutableElement> isParseMethod = getIsParseMethod(parseMethod.apply(annotation));
-            return methodsIn(type).anyMatch(isParseMethod.asPredicate(env));
+        private boolean isNullOrEmpty(String name) {
+            return name == null || name.isEmpty();
         }
 
-        private Rule<ExecutableElement> getIsParseMethod(String parseMethodName) {
+        private TypeMirror getTypeMirror(ProcessingEnvironment env, A annotation, Function<A, Class<?>> extractor) {
+            try {
+                Class<?> result = extractor.apply(annotation);
+                return Processors.getTypeMirror(env, result);
+            } catch (MirroredTypeException ex) {
+                return ex.getTypeMirror();
+            }
+        }
+
+        private String getParseMethodName(A annotation) {
+            String result = parseMethodName.apply(annotation);
+            return isNullOrEmpty(result) ? "parse" : result;
+        }
+
+        private String hasParseMethod(ProcessingEnvironment env, TypeElement type) {
+            A annotation = type.getAnnotation(annotationType);
+
+            String methodName = getParseMethodName(annotation);
+
+            List<ExecutableElement> methods = methodsIn(type)
+                    .filter(isNamed(methodName).asPredicate(env))
+                    .collect(Collectors.toList());
+
+            Rule<ExecutableElement> isParseMethod = getIsParseMethod(getTypeMirror(env, annotation, parseType));
+
+            switch (methods.size()) {
+                case 1:
+                    return isParseMethod.check(env, methods.get(0));
+                default:
+                    return String.format("'%s' must have a parser", type);
+            }
+        }
+
+        private Rule<ExecutableElement> getIsParseMethod(TypeMirror parseType) {
             return Rule.on(ExecutableElement.class)
-                    .and(isNamed(parseMethodName))
                     .and(is(PUBLIC))
                     .and(is(STATIC))
                     .and(returnsEnclosing())
-                    .and(hasParametersThat(is(parseType)))
+                    .and(hasParametersThat3(is3(parseType)))
                     .and(hasNoCheckedException());
         }
 
-        private boolean hasFormatMethod(ProcessingEnvironment env, TypeElement type) {
-            A annotation = type.getAnnotation(annotationType);
-            Rule<ExecutableElement> isFormatMethod = getIsFormatMethod(formatMethod.apply(annotation));
-            return methodsIn(type).anyMatch(isFormatMethod.asPredicate(env));
+        private String getFormatMethodName(TypeMirror type, A annotation) {
+            String result = formatMethodName.apply(annotation);
+            if (!isNullOrEmpty(result)) {
+                return result;
+            }
+            TypeName typeName = TypeName.get(type);
+            return "to" + (typeName instanceof ClassName ? ((ClassName) typeName).simpleName() : typeName.toString());
         }
 
-        private Rule<ExecutableElement> getIsFormatMethod(String formatMethodName) {
+        private String hasFormatMethod(ProcessingEnvironment env, TypeElement type) {
+            A annotation = type.getAnnotation(annotationType);
+
+            TypeMirror formatTypeMirror = getTypeMirror(env, annotation, formatType);
+            String methodName = getFormatMethodName(formatTypeMirror, annotation);
+
+            List<ExecutableElement> methods = methodsIn(type)
+                    .filter(isNamed(methodName).asPredicate(env))
+                    .collect(Collectors.toList());
+
+            Rule<ExecutableElement> isFormatMethod = getIsFormatMethod(formatTypeMirror);
+
+            switch (methods.size()) {
+                case 1:
+                    return isFormatMethod.check(env, methods.get(0));
+                default:
+                    return String.format("'%s' must have a formatter", type);
+            }
+        }
+
+        private Rule<ExecutableElement> getIsFormatMethod(TypeMirror formatType) {
             return Rule.on(ExecutableElement.class)
-                    .and(isNamed(formatMethodName))
                     .and(is(PUBLIC))
                     .and(isNot(STATIC))
-                    .and(returnsTypeThat2(is2(formatType)))
+                    .and(returnsTypeThat2(is3(formatType)))
                     .and(hasNoParameter())
                     .and(hasNoCheckedException());
         }
 
-        private final Rule<TypeElement> hasParseMethodRule = Rule.of(this::hasParseMethod, "'%s' must have a parser");
-
-        private final Rule<TypeElement> hasFormatMethodRule = Rule.of(this::hasFormatMethod, "'%s' must have a formatter");
-
         private final Rule<TypeElement> isRepresentableRule = Rule.on(TypeElement.class)
-                .and(hasParseMethodRule)
-                .and(hasFormatMethodRule);
+                .and(this::hasParseMethod)
+                .and(this::hasFormatMethod);
 
         @Override
         public String check(ProcessingEnvironment env, TypeElement element) {

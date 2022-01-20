@@ -103,4 +103,8 @@ public interface Rule<T> {
     static <T extends TypeMirror> Rule<T> is2(Class<?> expected) {
         return of((env, e) -> env.getTypeUtils().isSameType(e, Processors.getTypeMirror(env, expected)), "'%s' must be the type " + expected);
     }
+
+    static <T extends TypeMirror> Rule<T> is3(TypeMirror expected) {
+        return of((env, e) -> env.getTypeUtils().isSameType(e, expected), "'%s' must be the type " + expected);
+    }
 }

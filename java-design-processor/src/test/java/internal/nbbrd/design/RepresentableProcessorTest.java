@@ -129,6 +129,45 @@ public class RepresentableProcessorTest {
         }
     }
 
+    @Nested
+    class OnObjectTest {
+
+        @Test
+        public void testValid() {
+            RepresentableProcessorTest.this.testValid("internal/nbbrd/design/RObjectValid.java");
+        }
+
+        @Test
+        public void testAlternateParser() {
+            RepresentableProcessorTest.this.testAlternateParser("internal/nbbrd/design/RObjectAlternateParser.java");
+        }
+
+        @Test
+        public void testAlternateFormatter() {
+            RepresentableProcessorTest.this.testAlternateFormatter("internal/nbbrd/design/RObjectAlternateFormatter.java");
+        }
+
+        @Test
+        public void testNonStatic() {
+            RepresentableProcessorTest.this.testNonStatic("internal/nbbrd/design/RObjectNonStatic.java");
+        }
+
+        @Test
+        public void testInvalidParamType() {
+            RepresentableProcessorTest.this.testInvalidParamType("internal/nbbrd/design/RObjectInvalidParamType.java");
+        }
+
+        @Test
+        public void testInvalidReturnType() {
+            RepresentableProcessorTest.this.testInvalidReturnType("internal/nbbrd/design/RObjectInvalidReturnType.java");
+        }
+
+        @Test
+        public void testCheckedException() {
+            RepresentableProcessorTest.this.testCheckedException("internal/nbbrd/design/RObjectCheckedException.java");
+        }
+    }
+
     private void testValid(String resourceName) {
         JavaFileObject file = JavaFileObjects.forResource(resourceName);
         Compilation compilation = compile(file);
@@ -161,7 +200,7 @@ public class RepresentableProcessorTest {
                 .failed();
 
         assertThat(compilation)
-                .hadErrorContaining("must have a parser")
+                .hadErrorContaining("must be static")
                 .inFile(file)
                 .onLine(6);
     }
@@ -174,7 +213,7 @@ public class RepresentableProcessorTest {
                 .failed();
 
         assertThat(compilation)
-                .hadErrorContaining("must have a parser")
+                .hadErrorContaining("must be the type")
                 .inFile(file)
                 .onLine(6);
     }
@@ -187,7 +226,7 @@ public class RepresentableProcessorTest {
                 .failed();
 
         assertThat(compilation)
-                .hadErrorContaining("must have a parser")
+                .hadErrorContaining("return type must extends enclosing type")
                 .inFile(file)
                 .onLine(6);
     }
@@ -200,7 +239,7 @@ public class RepresentableProcessorTest {
                 .failed();
 
         assertThat(compilation)
-                .hadErrorContaining("must have a parser")
+                .hadErrorContaining("must not have checked exceptions")
                 .inFile(file)
                 .onLine(8);
     }
