@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.0] - 2022-01-20
 
+This release replaces the `StringValue` annotation with a more general approach that is not limited to `String`.
+
 ### Added
 - Add `RepresentableAs` annotation
 - Add `RepresentableAsInt` annotation
@@ -17,10 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.1.3] - 2021-03-19
 
 ### Changed
-- Maven groupId is now `com.github.nbbrd.java-design-util`
-
-### Fixed
-- Migration to Maven-Central
+- Migration to [Maven-Central](https://search.maven.org/search?q=g:com.github.nbbrd.java-design-util)
+- **Breaking change**: Maven groupId is now `com.github.nbbrd.java-design-util`
 
 ## [1.1.2] - 2021-01-07
 
