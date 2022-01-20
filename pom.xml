@@ -367,6 +367,7 @@
                         <version>1.17.0</version>
                         <configuration>
                             <gitFlowConfig>
+                                <productionBranch>main</productionBranch>
                                 <versionTagPrefix>v</versionTagPrefix>
                             </gitFlowConfig>
                         </configuration>
