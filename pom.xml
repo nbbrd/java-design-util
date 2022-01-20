@@ -5,7 +5,7 @@
 
     <groupId>com.github.nbbrd.java-design-util</groupId>
     <artifactId>java-design-parent</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>java-design</name>
