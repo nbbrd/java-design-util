@@ -20,6 +20,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.type.TypeMirror;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
@@ -28,7 +29,7 @@ import java.util.function.Predicate;
  * @author Philippe Charles
  */
 @FunctionalInterface
-public interface Rule<T extends Element> {
+public interface Rule<T> {
 
     String check(ProcessingEnvironment env, T element);
 
@@ -71,7 +72,7 @@ public interface Rule<T extends Element> {
         return (env, e) -> !condition.test(e) ? String.format(formattedMessage, e) : NO_ERROR;
     }
 
-    static <T extends Element> Rule<T> of(BiPredicate<ProcessingEnvironment, ? super T> condition, String formattedMessage) {
+    static <T> Rule<T> of(BiPredicate<ProcessingEnvironment, ? super T> condition, String formattedMessage) {
         return (env, e) -> !condition.test(env, e) ? String.format(formattedMessage, e) : NO_ERROR;
     }
 
@@ -96,6 +97,14 @@ public interface Rule<T extends Element> {
     }
 
     static <T extends Element> Rule<T> is(Class<?> expected) {
-        return of((env, e) -> env.getTypeUtils().isSameType(e.asType(), Processors.getTypeElement(env, expected).asType()), "'%s' must be the type " + expected);
+        return of((env, e) -> env.getTypeUtils().isSameType(e.asType(), Processors.getTypeMirror(env, expected)), "'%s' must be the type " + expected);
+    }
+
+    static <T extends TypeMirror> Rule<T> is2(Class<?> expected) {
+        return of((env, e) -> env.getTypeUtils().isSameType(e, Processors.getTypeMirror(env, expected)), "'%s' must be the type " + expected);
+    }
+
+    static <T extends TypeMirror> Rule<T> is3(TypeMirror expected) {
+        return of((env, e) -> env.getTypeUtils().isSameType(e, expected), "'%s' must be the type " + expected);
     }
 }

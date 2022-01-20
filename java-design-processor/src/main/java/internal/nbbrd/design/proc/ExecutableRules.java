@@ -22,6 +22,10 @@ public class ExecutableRules {
         return (env, m) -> hasParametersThat(env, m, rules);
     }
 
+    public static Rule<ExecutableElement> hasParametersThat3(Rule<? super TypeMirror>... rules) {
+        return (env, m) -> hasParametersThat3(env, m, rules);
+    }
+
     public static Rule<ExecutableElement> hasAllParametersThat(Rule<? super VariableElement> rule) {
         return (env, m) -> hasAllParametersThat(env, m, rule);
     }
@@ -38,6 +42,10 @@ public class ExecutableRules {
         return (env, m) -> returnsTypeThat(env, m, rule);
     }
 
+    public static Rule<ExecutableElement> returnsTypeThat2(Rule<? super TypeMirror> rule) {
+        return (env, m) -> returnsTypeThat2(env, m, rule);
+    }
+
     private static String hasParametersThat(ProcessingEnvironment env, ExecutableElement method, Rule<? super VariableElement>... rules) {
         if (method.getParameters().size() != rules.length) {
             return "'%s' must have " + rules.length + " parameters";
@@ -45,6 +53,20 @@ public class ExecutableRules {
         List<? extends VariableElement> params = method.getParameters();
         for (int i = 0; i < params.size(); i++) {
             String result = rules[i].check(env, params.get(i));
+            if (result != null) {
+                return result;
+            }
+        }
+        return null;
+    }
+
+    private static String hasParametersThat3(ProcessingEnvironment env, ExecutableElement method, Rule<? super TypeMirror>... rules) {
+        if (method.getParameters().size() != rules.length) {
+            return "'%s' must have " + rules.length + " parameters";
+        }
+        List<? extends VariableElement> params = method.getParameters();
+        for (int i = 0; i < params.size(); i++) {
+            String result = rules[i].check(env, params.get(i).asType());
             if (result != null) {
                 return result;
             }
@@ -83,5 +105,9 @@ public class ExecutableRules {
         return element instanceof TypeElement
                 ? rule.check(env, (TypeElement) element)
                 : "'%s' doesn't return a type element";
+    }
+
+    private static String returnsTypeThat2(ProcessingEnvironment env, ExecutableElement type, Rule<? super TypeMirror> rule) {
+        return rule.check(env, type.getReturnType());
     }
 }

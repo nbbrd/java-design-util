@@ -3,13 +3,10 @@ package internal.nbbrd.design;
 import nbbrd.design.StringValue;
 
 @StringValue(formatMethodName = "toISO123")
-public class AlternateFormatterSV {
+public class StringValueAlternateFormatter {
 
-    public static AlternateFormatterSV parse(CharSequence text) {
-        return new AlternateFormatterSV();
-    }
-
-    private AlternateFormatterSV() {
+    public static StringValueAlternateFormatter parse(CharSequence text) {
+        return new StringValueAlternateFormatter();
     }
 
     public String toISO123() {

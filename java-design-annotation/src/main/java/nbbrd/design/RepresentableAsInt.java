@@ -22,19 +22,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Class that can be represented unambiguously by a String.
- * Such class must have a static factory method that accepts unique CharSequence parameter
+ * Class that can be represented unambiguously by an <code>int</code>.
+ * Such class must have a static factory method that accepts unique <code>int</code> parameter
  * and that doesn't throw a checked exception.
  *
  * @author Philippe Charles
- * @deprecated use {@link RepresentableAsString} instead
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.SOURCE)
-@Deprecated
-public @interface StringValue {
+public @interface RepresentableAsInt {
 
     String parseMethodName() default "parse";
 
-    String formatMethodName() default "toString";
+    String formatMethodName() default "toInt";
 }

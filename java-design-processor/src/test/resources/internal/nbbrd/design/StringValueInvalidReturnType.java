@@ -3,12 +3,14 @@ package internal.nbbrd.design;
 import nbbrd.design.StringValue;
 
 @StringValue
-public class InvalidReturnTypeSV {
+public class StringValueInvalidReturnType {
 
     public static String parse(CharSequence text) {
         return "";
     }
 
-    private InvalidReturnTypeSV() {
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }

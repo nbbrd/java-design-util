@@ -79,4 +79,10 @@ public class Processors {
     public static TypeElement getTypeElement(ProcessingEnvironment env, Class<?> type) {
         return env.getElementUtils().getTypeElement(type.getName());
     }
+
+    public static TypeMirror getTypeMirror(ProcessingEnvironment env, Class<?> type) {
+        return type.isPrimitive()
+                ? env.getTypeUtils().getPrimitiveType(TypeKind.valueOf(type.getSimpleName().toUpperCase()))
+                : env.getElementUtils().getTypeElement(type.getName()).asType();
+    }
 }
