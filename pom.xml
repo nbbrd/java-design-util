@@ -5,7 +5,7 @@
 
     <groupId>com.github.nbbrd.java-design-util</groupId>
     <artifactId>java-design-parent</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
     <packaging>pom</packaging>
 
     <name>java-design</name>
@@ -44,7 +44,7 @@
             <dependency>
                 <groupId>org.checkerframework</groupId>
                 <artifactId>checker-qual</artifactId>
-                <version>3.21.1</version>
+                <version>3.21.2</version>
             </dependency>
             <!-- test libraries -->
             <dependency>

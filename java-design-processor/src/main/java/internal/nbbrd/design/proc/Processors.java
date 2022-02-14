@@ -57,25 +57,6 @@ public class Processors {
         }
     }
 
-    public static boolean isAssignableFrom(TypeMirror from, TypeMirror to) {
-        TypeMirror current = from.getKind().equals(TypeKind.TYPEVAR) ? ((TypeVariable) from).getUpperBound() : from;
-        while (current instanceof DeclaredType && !isCompatible(to, current)) {
-            current = ((DeclaredType) current).getEnclosingType();
-        }
-        return isCompatible(to, current);
-    }
-
-    private static boolean isCompatible(TypeMirror to, TypeMirror current) {
-        if (to instanceof DeclaredType && current instanceof DeclaredType) {
-            // Generic problem such as:
-            // demetra.regarima.internal.RegArmaSsqFunction
-            // demetra.regarima.internal.RegArmaSsqFunction<S>
-            return current.toString().contains(to.toString());
-        }
-        // FIXME: bug if same prefix
-        return to.equals(current);
-    }
-
     public static TypeElement getTypeElement(ProcessingEnvironment env, Class<?> type) {
         return env.getElementUtils().getTypeElement(type.getName());
     }
