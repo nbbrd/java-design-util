@@ -30,7 +30,6 @@ import java.util.Set;
 import static internal.nbbrd.design.proc.Elements2.methodsIn;
 import static internal.nbbrd.design.proc.ExecutableRules.hasNoParameter;
 import static internal.nbbrd.design.proc.Processors.extractResultType;
-import static internal.nbbrd.design.proc.Processors.isAssignableFrom;
 import static internal.nbbrd.design.proc.Rule.isNamed;
 
 /**
@@ -59,7 +58,7 @@ public final class BuilderPatternProcessor extends AbstractProcessor {
         return Rule.on(ExecutableElement.class)
                 .and(isNamed(annotation.buildMethodName()))
                 .and(hasNoParameter())
-                .and(Rule.of(method -> isAssignableFrom(method.getReturnType(), extractResultType(annotation::value)), ""));
+                .and(Rule.of((env, method) -> env.getTypeUtils().isAssignable(method.getReturnType(), extractResultType(annotation::value)), ""));
     }
 
     private static final Rule<TypeElement> HAS_BUILD_METHOD = Rule.of(BuilderPatternProcessor::hasBuildMethod, "Cannot find build method in '%s'");
