@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.github.nbbrd.java-design-util</groupId>
+        <artifactId>java-design-parent</artifactId>
+        <version>1.2.3-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>java-design-bom</artifactId>
+    <packaging>pom</packaging>
+
+    <name>java-design-bom</name>
+    <description>Java design utilities - Bill of Materials</description>
+    <url>https://github.com/nbbrd/java-design-util</url>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <artifactId>java-design-annotation</artifactId>
+                <groupId>${project.groupId}</groupId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <artifactId>java-design-processor</artifactId>
+                <groupId>${project.groupId}</groupId>
+                <version>${project.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.projectlombok</groupId>
+                        <artifactId>lombok</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.github.nbbrd.java-service-util</groupId>
+                        <artifactId>java-service-processor</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.checkerframework</groupId>
+                        <artifactId>checker-qual</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

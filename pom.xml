@@ -37,6 +37,7 @@
     <modules>
         <module>java-design-annotation</module>
         <module>java-design-processor</module>
+        <module>java-design-bom</module>
     </modules>
 
     <dependencyManagement>
