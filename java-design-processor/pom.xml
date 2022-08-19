@@ -16,6 +16,10 @@
     <description>Java design utilities - Processor</description>
     <url>https://github.com/nbbrd/java-design-util</url>
 
+    <properties>
+        <module-name>nbbrd.design.processor</module-name>
+    </properties>
+
     <dependencies>
         <!-- compile only -->
         <dependency>
@@ -127,7 +131,7 @@
                         <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                         <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                             <manifestEntries>
-                                <Automatic-Module-Name>nbbrd.design.processor</Automatic-Module-Name>
+                                <Automatic-Module-Name>${module-name}</Automatic-Module-Name>
                             </manifestEntries>
                         </transformer>
                     </transformers>
@@ -140,7 +144,7 @@
                     <relocations>
                         <relocation>
                             <pattern>com.squareup.javapoet</pattern>
-                            <shadedPattern>internal.nbbrd.design.com.squareup.javapoet</shadedPattern>
+                            <shadedPattern>shaded.${module-name}.com.squareup.javapoet</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
