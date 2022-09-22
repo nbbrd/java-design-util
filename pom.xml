@@ -11,6 +11,7 @@
     <name>java-design</name>
     <description>Java design utilities</description>
     <url>https://github.com/nbbrd/java-design-util</url>
+    <inceptionYear>2020</inceptionYear>
 
     <licenses>
         <license>
