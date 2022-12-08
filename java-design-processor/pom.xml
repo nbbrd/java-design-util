@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.github.nbbrd.java-design-util</groupId>
         <artifactId>java-design-parent</artifactId>
-        <version>1.3.1</version>
+        <version>1.4.0</version>
     </parent>
 
     <artifactId>java-design-processor</artifactId>
@@ -108,7 +108,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.4.1</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
