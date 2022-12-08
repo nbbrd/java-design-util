@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add annotations to document threading in Swing components
+
 ## [1.3.1] - 2022-08-19
 
 ### Fixed
