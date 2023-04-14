@@ -22,6 +22,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.*;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -63,7 +64,7 @@ public class Processors {
 
     public static TypeMirror getTypeMirror(ProcessingEnvironment env, Class<?> type) {
         return type.isPrimitive()
-                ? env.getTypeUtils().getPrimitiveType(TypeKind.valueOf(type.getSimpleName().toUpperCase()))
+                ? env.getTypeUtils().getPrimitiveType(TypeKind.valueOf(type.getSimpleName().toUpperCase(Locale.ROOT)))
                 : env.getElementUtils().getTypeElement(type.getName()).asType();
     }
 }

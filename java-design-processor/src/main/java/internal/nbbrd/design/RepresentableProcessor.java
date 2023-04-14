@@ -20,6 +20,7 @@ import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 import java.lang.annotation.Annotation;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -129,7 +130,7 @@ public final class RepresentableProcessor extends AbstractProcessor {
                 case 1:
                     return isParseMethod.check(env, methods.get(0));
                 default:
-                    return String.format("'%s' must have a parser", type);
+                    return String.format(Locale.ROOT, "'%s' must have a parser", type);
             }
         }
 
@@ -167,7 +168,7 @@ public final class RepresentableProcessor extends AbstractProcessor {
                 case 1:
                     return isFormatMethod.check(env, methods.get(0));
                 default:
-                    return String.format("'%s' must have a formatter", type);
+                    return String.format(Locale.ROOT, "'%s' must have a formatter", type);
             }
         }
 
