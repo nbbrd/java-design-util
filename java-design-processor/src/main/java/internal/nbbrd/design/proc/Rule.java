@@ -21,6 +21,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeMirror;
+import java.util.Locale;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
@@ -69,11 +70,11 @@ public interface Rule<T> {
     }
 
     static <T extends Element> Rule<T> of(Predicate<? super T> condition, String formattedMessage) {
-        return (env, e) -> !condition.test(e) ? String.format(formattedMessage, e) : NO_ERROR;
+        return (env, e) -> !condition.test(e) ? String.format(Locale.ROOT, formattedMessage, e) : NO_ERROR;
     }
 
     static <T> Rule<T> of(BiPredicate<ProcessingEnvironment, ? super T> condition, String formattedMessage) {
-        return (env, e) -> !condition.test(env, e) ? String.format(formattedMessage, e) : NO_ERROR;
+        return (env, e) -> !condition.test(env, e) ? String.format(Locale.ROOT, formattedMessage, e) : NO_ERROR;
     }
 
     static <T extends Element> Rule<T> is(Modifier modifier) {
