@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add annotation to check constants that represent their enclosing class
+
 ## [1.4.0] - 2022-12-08
 
 ### Added
