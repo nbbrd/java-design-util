@@ -16,9 +16,13 @@
  */
 package nbbrd.design;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 /**
  * An annotation that indicates that the visibility of a type or member has been
  * relaxed to make the code testable.
  */
+@Retention(RetentionPolicy.SOURCE)
 public @interface VisibleForTesting {
 }
