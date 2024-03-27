@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.1] - 2024-03-27
+
 ### Fixed
 
 - Fix check on multiple representations [#221](https://github.com/nbbrd/java-design-util/issues/221)
@@ -96,7 +98,8 @@ This release replaces the `StringValue` annotation with a more general approach 
 
 - Initial release
 
-[Unreleased]: https://github.com/nbbrd/java-design-util/compare/v1.5.0...HEAD
+[Unreleased]: https://github.com/nbbrd/java-design-util/compare/v1.5.1...HEAD
+[1.5.1]: https://github.com/nbbrd/java-design-util/compare/v1.5.0...v1.5.1
 [1.5.0]: https://github.com/nbbrd/java-design-util/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/nbbrd/java-design-util/compare/v1.3.1...v1.4.0
 [1.3.1]: https://github.com/nbbrd/java-design-util/compare/v1.3.0...v1.3.1
