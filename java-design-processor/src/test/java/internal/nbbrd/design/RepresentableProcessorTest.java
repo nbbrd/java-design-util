@@ -17,37 +17,37 @@ public class RepresentableProcessorTest {
 
         @Test
         public void testValid() {
-            RepresentableProcessorTest.this.testValid("internal/nbbrd/design/StringValueValid.java");
+            assertValid("internal/nbbrd/design/StringValueValid.java");
         }
 
         @Test
         public void testAlternateParser() {
-            RepresentableProcessorTest.this.testAlternateParser("internal/nbbrd/design/StringValueAlternateParser.java");
+            assertAlternateParser("internal/nbbrd/design/StringValueAlternateParser.java");
         }
 
         @Test
         public void testAlternateFormatter() {
-            RepresentableProcessorTest.this.testAlternateFormatter("internal/nbbrd/design/StringValueAlternateFormatter.java");
+            assertAlternateFormatter("internal/nbbrd/design/StringValueAlternateFormatter.java");
         }
 
         @Test
         public void testNonStatic() {
-            RepresentableProcessorTest.this.testNonStatic("internal/nbbrd/design/StringValueNonStatic.java");
+            assertNonStatic("internal/nbbrd/design/StringValueNonStatic.java");
         }
 
         @Test
         public void testInvalidParamType() {
-            RepresentableProcessorTest.this.testInvalidParamType("internal/nbbrd/design/StringValueInvalidParamType.java");
+            assertInvalidParamType("internal/nbbrd/design/StringValueInvalidParamType.java");
         }
 
         @Test
         public void testInvalidReturnType() {
-            RepresentableProcessorTest.this.testInvalidReturnType("internal/nbbrd/design/StringValueInvalidReturnType.java");
+            assertInvalidReturnType("internal/nbbrd/design/StringValueInvalidReturnType.java");
         }
 
         @Test
         public void testCheckedException() {
-            RepresentableProcessorTest.this.testCheckedException("internal/nbbrd/design/StringValueCheckedException.java");
+            assertCheckedException("internal/nbbrd/design/StringValueCheckedException.java");
         }
     }
 
@@ -56,37 +56,37 @@ public class RepresentableProcessorTest {
 
         @Test
         public void testValid() {
-            RepresentableProcessorTest.this.testValid("internal/nbbrd/design/RIntValid.java");
+            assertValid("internal/nbbrd/design/RIntValid.java");
         }
 
         @Test
         public void testAlternateParser() {
-            RepresentableProcessorTest.this.testAlternateParser("internal/nbbrd/design/RIntAlternateParser.java");
+            assertAlternateParser("internal/nbbrd/design/RIntAlternateParser.java");
         }
 
         @Test
         public void testAlternateFormatter() {
-            RepresentableProcessorTest.this.testAlternateFormatter("internal/nbbrd/design/RIntAlternateFormatter.java");
+            assertAlternateFormatter("internal/nbbrd/design/RIntAlternateFormatter.java");
         }
 
         @Test
         public void testNonStatic() {
-            RepresentableProcessorTest.this.testNonStatic("internal/nbbrd/design/RIntNonStatic.java");
+            assertNonStatic("internal/nbbrd/design/RIntNonStatic.java");
         }
 
         @Test
         public void testInvalidParamType() {
-            RepresentableProcessorTest.this.testInvalidParamType("internal/nbbrd/design/RIntInvalidParamType.java");
+            assertInvalidParamType("internal/nbbrd/design/RIntInvalidParamType.java");
         }
 
         @Test
         public void testInvalidReturnType() {
-            RepresentableProcessorTest.this.testInvalidReturnType("internal/nbbrd/design/RIntInvalidReturnType.java");
+            assertInvalidReturnType("internal/nbbrd/design/RIntInvalidReturnType.java");
         }
 
         @Test
         public void testCheckedException() {
-            RepresentableProcessorTest.this.testCheckedException("internal/nbbrd/design/RIntCheckedException.java");
+            assertCheckedException("internal/nbbrd/design/RIntCheckedException.java");
         }
     }
 
@@ -95,37 +95,37 @@ public class RepresentableProcessorTest {
 
         @Test
         public void testValid() {
-            RepresentableProcessorTest.this.testValid("internal/nbbrd/design/RStringValid.java");
+            assertValid("internal/nbbrd/design/RStringValid.java");
         }
 
         @Test
         public void testAlternateParser() {
-            RepresentableProcessorTest.this.testAlternateParser("internal/nbbrd/design/RStringAlternateParser.java");
+            assertAlternateParser("internal/nbbrd/design/RStringAlternateParser.java");
         }
 
         @Test
         public void testAlternateFormatter() {
-            RepresentableProcessorTest.this.testAlternateFormatter("internal/nbbrd/design/RStringAlternateFormatter.java");
+            assertAlternateFormatter("internal/nbbrd/design/RStringAlternateFormatter.java");
         }
 
         @Test
         public void testNonStatic() {
-            RepresentableProcessorTest.this.testNonStatic("internal/nbbrd/design/RStringNonStatic.java");
+            assertNonStatic("internal/nbbrd/design/RStringNonStatic.java");
         }
 
         @Test
         public void testInvalidParamType() {
-            RepresentableProcessorTest.this.testInvalidParamType("internal/nbbrd/design/RStringInvalidParamType.java");
+            assertInvalidParamType("internal/nbbrd/design/RStringInvalidParamType.java");
         }
 
         @Test
         public void testInvalidReturnType() {
-            RepresentableProcessorTest.this.testInvalidReturnType("internal/nbbrd/design/RStringInvalidReturnType.java");
+            assertInvalidReturnType("internal/nbbrd/design/RStringInvalidReturnType.java");
         }
 
         @Test
         public void testCheckedException() {
-            RepresentableProcessorTest.this.testCheckedException("internal/nbbrd/design/RStringCheckedException.java");
+            assertCheckedException("internal/nbbrd/design/RStringCheckedException.java");
         }
     }
 
@@ -134,41 +134,46 @@ public class RepresentableProcessorTest {
 
         @Test
         public void testValid() {
-            RepresentableProcessorTest.this.testValid("internal/nbbrd/design/RObjectValid.java");
+            assertValid("internal/nbbrd/design/RObjectValid.java");
         }
 
         @Test
         public void testAlternateParser() {
-            RepresentableProcessorTest.this.testAlternateParser("internal/nbbrd/design/RObjectAlternateParser.java");
+            assertAlternateParser("internal/nbbrd/design/RObjectAlternateParser.java");
         }
 
         @Test
         public void testAlternateFormatter() {
-            RepresentableProcessorTest.this.testAlternateFormatter("internal/nbbrd/design/RObjectAlternateFormatter.java");
+            assertAlternateFormatter("internal/nbbrd/design/RObjectAlternateFormatter.java");
         }
 
         @Test
         public void testNonStatic() {
-            RepresentableProcessorTest.this.testNonStatic("internal/nbbrd/design/RObjectNonStatic.java");
+            assertNonStatic("internal/nbbrd/design/RObjectNonStatic.java");
         }
 
         @Test
         public void testInvalidParamType() {
-            RepresentableProcessorTest.this.testInvalidParamType("internal/nbbrd/design/RObjectInvalidParamType.java");
+            assertInvalidParamType("internal/nbbrd/design/RObjectInvalidParamType.java");
         }
 
         @Test
         public void testInvalidReturnType() {
-            RepresentableProcessorTest.this.testInvalidReturnType("internal/nbbrd/design/RObjectInvalidReturnType.java");
+            assertInvalidReturnType("internal/nbbrd/design/RObjectInvalidReturnType.java");
         }
 
         @Test
         public void testCheckedException() {
-            RepresentableProcessorTest.this.testCheckedException("internal/nbbrd/design/RObjectCheckedException.java");
+            assertCheckedException("internal/nbbrd/design/RObjectCheckedException.java");
         }
     }
 
-    private void testValid(String resourceName) {
+    @Test
+    public void testMultipleRepresentations() {
+        assertValid("internal/nbbrd/design/RMultiValid.java");
+    }
+
+    private static void assertValid(String resourceName) {
         JavaFileObject file = JavaFileObjects.forResource(resourceName);
         Compilation compilation = compile(file);
 
@@ -176,7 +181,7 @@ public class RepresentableProcessorTest {
                 .succeededWithoutWarnings();
     }
 
-    private void testAlternateParser(String resourceName) {
+    private static void assertAlternateParser(String resourceName) {
         JavaFileObject file = JavaFileObjects.forResource(resourceName);
         Compilation compilation = compile(file);
 
@@ -184,7 +189,7 @@ public class RepresentableProcessorTest {
                 .succeededWithoutWarnings();
     }
 
-    private void testAlternateFormatter(String resourceName) {
+    private static void assertAlternateFormatter(String resourceName) {
         JavaFileObject file = JavaFileObjects.forResource(resourceName);
         Compilation compilation = compile(file);
 
@@ -192,7 +197,7 @@ public class RepresentableProcessorTest {
                 .succeededWithoutWarnings();
     }
 
-    private void testNonStatic(String resourceName) {
+    private static void assertNonStatic(String resourceName) {
         JavaFileObject file = JavaFileObjects.forResource(resourceName);
         Compilation compilation = compile(file);
 
@@ -205,7 +210,7 @@ public class RepresentableProcessorTest {
                 .onLine(6);
     }
 
-    private void testInvalidParamType(String resourceName) {
+    private static void assertInvalidParamType(String resourceName) {
         JavaFileObject file = JavaFileObjects.forResource(resourceName);
         Compilation compilation = compile(file);
 
@@ -218,7 +223,7 @@ public class RepresentableProcessorTest {
                 .onLine(6);
     }
 
-    private void testInvalidReturnType(String resourceName) {
+    private static void assertInvalidReturnType(String resourceName) {
         JavaFileObject file = JavaFileObjects.forResource(resourceName);
         Compilation compilation = compile(file);
 
@@ -231,7 +236,7 @@ public class RepresentableProcessorTest {
                 .onLine(6);
     }
 
-    private void testCheckedException(String resourceName) {
+    private static void assertCheckedException(String resourceName) {
         JavaFileObject file = JavaFileObjects.forResource(resourceName);
         Compilation compilation = compile(file);
 
@@ -244,7 +249,7 @@ public class RepresentableProcessorTest {
                 .onLine(8);
     }
 
-    private Compilation compile(JavaFileObject file) {
+    private static Compilation compile(JavaFileObject file) {
         return com.google.testing.compile.Compiler.javac()
                 .withProcessors(new RepresentableProcessor())
                 .compile(file);
