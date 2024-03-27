@@ -168,6 +168,11 @@ public class RepresentableProcessorTest {
         }
     }
 
+    @Test
+    public void testMultipleRepresentations() {
+        assertValid("internal/nbbrd/design/RMultiValid.java");
+    }
+
     private static void assertValid(String resourceName) {
         JavaFileObject file = JavaFileObjects.forResource(resourceName);
         Compilation compilation = compile(file);

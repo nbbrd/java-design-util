@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix check on multiple representations [#221](https://github.com/nbbrd/java-design-util/issues/221)
+
 ### Changed
 
 - Change `@VisibleForTesting` annotation retention to `SOURCE`

@@ -127,10 +127,14 @@ public final class RepresentableProcessor extends AbstractProcessor {
             Rule<ExecutableElement> isParseMethod = getIsParseMethod(getTypeMirror(env, annotation, parseType));
 
             switch (methods.size()) {
+                case 0:
+                    return String.format(Locale.ROOT, "'%s' must have a parser", type);
                 case 1:
                     return isParseMethod.check(env, methods.get(0));
                 default:
-                    return String.format(Locale.ROOT, "'%s' must have a parser", type);
+                    return methods.stream().filter(isParseMethod.asPredicate(env)).count() == 1
+                            ? NO_ERROR
+                            : String.format(Locale.ROOT, "'%s' has too many parsers", type);
             }
         }
 
