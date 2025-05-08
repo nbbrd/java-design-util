@@ -11,4 +11,12 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.SOURCE)
 public @interface StaticFactoryMethod {
+
+    /**
+     * The interface (or class) to create.<br>This
+     * value is optional and will use the enclosed type if absent.
+     *
+     * @return a non-null type
+     */
+    Class<?> value() default Void.class;
 }

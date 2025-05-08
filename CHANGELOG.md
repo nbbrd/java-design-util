@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add DecoratorPattern annotation [#338](https://github.com/nbbrd/java-design-util/issues/338)
+- Add support of external factories in StaticFactoryMethod [#152](https://github.com/nbbrd/java-design-util/issues/152)
 
 ### Fixed
 

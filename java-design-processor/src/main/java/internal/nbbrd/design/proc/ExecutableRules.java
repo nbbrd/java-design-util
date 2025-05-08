@@ -8,6 +8,7 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
 import java.util.List;
+import java.util.function.Function;
 
 import static internal.nbbrd.design.proc.Rule.of;
 
@@ -35,7 +36,11 @@ public class ExecutableRules {
     }
 
     public static Rule<ExecutableElement> returnsEnclosing() {
-        return of((env, m) -> returnsEnclosing(env, m), "'%s' return type must extends enclosing type");
+        return of((env, m) -> isReturningEnclosingType(env, m), "'%s' return type must extends enclosing type");
+    }
+
+    public static Rule<ExecutableElement> returns(Function<ExecutableElement, TypeMirror> extractor) {
+        return of((env, m) -> isReturningType(env, m, extractor.apply(m)), "'%s' return type is not valid");
     }
 
     public static Rule<ExecutableElement> returnsTypeThat(Rule<? super TypeElement> rule) {
@@ -93,11 +98,17 @@ public class ExecutableRules {
                 .allMatch(o -> env.getTypeUtils().isAssignable(o, runtimeException.asType()));
     }
 
-    private static boolean returnsEnclosing(ProcessingEnvironment env, ExecutableElement type) {
+    private static boolean isReturningEnclosingType(ProcessingEnvironment env, ExecutableElement executable) {
+        TypeMirror expected = executable.getEnclosingElement().asType();
+        TypeMirror found = executable.getReturnType();
         Types types = env.getTypeUtils();
-        TypeMirror expected = type.getEnclosingElement().asType();
-        TypeMirror found = type.getReturnType();
         return types.isSameType(types.erasure(expected), types.erasure(found));
+    }
+
+    private static boolean isReturningType(ProcessingEnvironment env, ExecutableElement executable, TypeMirror type) {
+        TypeMirror found = executable.getReturnType();
+        Types types = env.getTypeUtils();
+        return types.isSameType(types.erasure(type), types.erasure(found));
     }
 
     private static String returnsTypeThat(ProcessingEnvironment env, ExecutableElement type, Rule<? super TypeElement> rule) {
