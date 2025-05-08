@@ -32,11 +32,11 @@ import java.util.Set;
  * @param <T>
  * @author Philippe Charles
  */
-@lombok.AllArgsConstructor(access = AccessLevel.PRIVATE)
+@lombok.Builder
 public final class Processing<T extends Element> {
 
-    public static <X extends Element> Processing<X> of(Rule<X>... rules) {
-        return new Processing<X>(Arrays.asList(rules));
+    public static <X extends Element> Processing<X> of(Rule<X> rule) {
+        return Processing.<X>builder().check(rule).build();
     }
 
     @lombok.Singular

@@ -80,7 +80,12 @@ public final class RepresentableProcessor extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         return Processing
-                .of(IS_STRING_VALUE, IS_INT, IS_STRING, IS_TYPE)
+                .<TypeElement>builder()
+                .check(IS_STRING_VALUE)
+                .check(IS_INT)
+                .check(IS_STRING)
+                .check(IS_TYPE)
+                .build()
                 .process(annotations, roundEnv, processingEnv);
     }
 
