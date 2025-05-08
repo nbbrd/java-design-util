@@ -28,5 +28,5 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.SOURCE)
 public @interface MightBePromoted {
 
-    String packagePattern() default "^(?:\\w+\\.)?(?:internal|impl)(?:\\.\\w+)?$";
+    String packagePattern() default "^(?:\\w+\\.)*(?:internal|impl)(?:\\.\\w+)*$";
 }
