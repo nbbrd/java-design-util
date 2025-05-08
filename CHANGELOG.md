@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add DecoratorPattern annotation [#338](https://github.com/nbbrd/java-design-util/issues/338)
+
 ### Fixed
 
 - Fix package pattern in MightBePromoted [#337](https://github.com/nbbrd/java-design-util/issues/337)
