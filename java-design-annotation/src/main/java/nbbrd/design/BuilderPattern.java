@@ -19,14 +19,28 @@ package nbbrd.design;
 import java.lang.annotation.*;
 
 /**
+ * The builder pattern is a design pattern that provides a flexible solution to various object creation problems in object-oriented programming.
+ * The builder pattern separates the construction of a complex object from its representation.
+ *
  * @author Philippe Charles
+ * @see <a href="https://en.wikipedia.org/wiki/Builder_pattern">Wikipedia</a>
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.SOURCE)
 @Documented
 public @interface BuilderPattern {
 
+    /**
+     * The type of the object that will be built by the builder.
+     *
+     * @return a non-null type
+     */
     Class<?> value();
 
+    /**
+     * The name of the method that builds the object.
+     *
+     * @return a non-null method name
+     */
     String buildMethodName() default "build";
 }

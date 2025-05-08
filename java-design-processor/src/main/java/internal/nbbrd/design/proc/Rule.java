@@ -22,6 +22,7 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeMirror;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
@@ -41,11 +42,11 @@ public interface Rule<T> {
     default Rule<T> or(Rule<? super T> other) {
         return (env, e) -> {
             String first = this.check(env, e);
-            if (first == NO_ERROR) {
+            if (Objects.equals(first, NO_ERROR)) {
                 return NO_ERROR;
             }
             String second = other.check(env, e);
-            if (second == NO_ERROR) {
+            if (Objects.equals(second, NO_ERROR)) {
                 return NO_ERROR;
             }
             return first + " or " + second;
@@ -55,7 +56,7 @@ public interface Rule<T> {
     default Rule<T> and(Rule<? super T> other) {
         return (env, e) -> {
             String result = this.check(env, e);
-            return result != NO_ERROR ? result : other.check(env, e);
+            return !Objects.equals(result, NO_ERROR) ? result : other.check(env, e);
         };
     }
 
@@ -65,7 +66,7 @@ public interface Rule<T> {
 
     String NO_ERROR = null;
 
-    static <T extends Element> Rule<T> on(Class<T> type) {
+    static <T extends Element> Rule<T> on(Class<T> ignore) {
         return (env, e) -> NO_ERROR;
     }
 
@@ -75,6 +76,10 @@ public interface Rule<T> {
 
     static <T> Rule<T> of(BiPredicate<ProcessingEnvironment, ? super T> condition, String formattedMessage) {
         return (env, e) -> !condition.test(env, e) ? String.format(Locale.ROOT, formattedMessage, e) : NO_ERROR;
+    }
+
+    static <T> Rule<T> ifThenElse(BiPredicate<ProcessingEnvironment, ? super T> condition, Rule<T> thenRule, Rule<T> elseRule) {
+        return (env, e) -> condition.test(env, e) ? thenRule.check(env, e) : elseRule.check(env, e);
     }
 
     static <T extends Element> Rule<T> is(Modifier modifier) {
