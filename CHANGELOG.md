@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add trait annotation [#351](https://github.com/nbbrd/java-design-util/issues/351)
+
 ### Changed
 
 - Migrate OSSRH to Central Portal

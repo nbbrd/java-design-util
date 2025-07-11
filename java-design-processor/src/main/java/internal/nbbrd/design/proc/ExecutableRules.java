@@ -16,7 +16,7 @@ import static internal.nbbrd.design.proc.Rule.of;
 public class ExecutableRules {
 
     public static Rule<ExecutableElement> hasNoParameter() {
-        return of(m -> m.getParameters().isEmpty(), "'%s' must not have parameters");
+        return Rule.it(m -> m.getParameters().isEmpty(), "'%s' must not have parameters");
     }
 
     public static Rule<ExecutableElement> hasParametersThat(Rule<? super VariableElement>... rules) {
