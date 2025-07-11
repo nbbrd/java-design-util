@@ -16,6 +16,7 @@
  */
 package internal.nbbrd.design;
 
+import internal.nbbrd.design.proc.Elements2;
 import internal.nbbrd.design.proc.Processing;
 import internal.nbbrd.design.proc.Rule;
 import nbbrd.service.ServiceProvider;
@@ -26,20 +27,17 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
 import java.util.Set;
 
-import static internal.nbbrd.design.proc.Rule.is;
-import static internal.nbbrd.design.proc.Rule.it;
-import static javax.lang.model.element.Modifier.FINAL;
-import static javax.lang.model.element.Modifier.STATIC;
+import static internal.nbbrd.design.proc.Rule.*;
+import static javax.lang.model.element.ElementKind.INTERFACE;
 
 /**
  * @author Philippe Charles
  */
 @ServiceProvider(Processor.class)
-@SupportedAnnotationTypes("nbbrd.design.ClassNameConstant")
-public final class ClassNameConstantProcessor extends AbstractProcessor {
+@SupportedAnnotationTypes("nbbrd.design.Trait")
+public final class TraitProcessor extends AbstractProcessor {
 
     @Override
     public SourceVersion getSupportedSourceVersion() {
@@ -48,18 +46,19 @@ public final class ClassNameConstantProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        return Processing.of(IS_CLASS_NAME_CONSTANT).process(annotations, roundEnv, processingEnv);
+        return Processing.of(IS_TRAIT).process(annotations, roundEnv, processingEnv);
     }
 
-    private static boolean hasClassName(VariableElement field) {
-        Object constantValue = field.getConstantValue();
-        return constantValue instanceof String
-                && field.getEnclosingElement().toString().equals(constantValue);
+    private static boolean hasAtLeastOneMethod(TypeElement type) {
+        return Elements2.methodsIn(type).findAny().isPresent();
     }
 
-    private static final Rule<VariableElement> IS_CLASS_NAME_CONSTANT = Rule.on(VariableElement.class)
-            .and(is(STATIC))
-            .and(is(FINAL))
-            .and(is(String.class))
-            .and(it(ClassNameConstantProcessor::hasClassName, "'%s' should represent the full name of its enclosing class"));
+    static boolean isValidName(String name) {
+        return name.endsWith("ble") || name.startsWith("Has");
+    }
+
+    private static final Rule<TypeElement> IS_TRAIT = Rule.on(TypeElement.class)
+            .and(is(INTERFACE))
+            .and(isNamedTesting(TraitProcessor::isValidName, "must end with 'ble' or start with 'Has'"))
+            .and(it(TraitProcessor::hasAtLeastOneMethod, "'%s' must have at least one method"));
 }

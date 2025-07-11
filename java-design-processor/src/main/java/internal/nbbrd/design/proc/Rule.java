@@ -70,7 +70,7 @@ public interface Rule<T> {
         return (env, e) -> NO_ERROR;
     }
 
-    static <T extends Element> Rule<T> of(Predicate<? super T> condition, String formattedMessage) {
+    static <T extends Element> Rule<T> it(Predicate<? super T> condition, String formattedMessage) {
         return (env, e) -> !condition.test(e) ? String.format(Locale.ROOT, formattedMessage, e) : NO_ERROR;
     }
 
@@ -83,19 +83,23 @@ public interface Rule<T> {
     }
 
     static <T extends Element> Rule<T> is(Modifier modifier) {
-        return of(e -> Elements2.is(e, modifier), "'%s' must be " + modifier);
+        return it(e -> Elements2.is(e, modifier), "'%s' must be " + modifier);
     }
 
     static <T extends Element> Rule<T> isNot(Modifier modifier) {
-        return of(e -> !Elements2.is(e, modifier), "'%s' must not be " + modifier);
+        return it(e -> !Elements2.is(e, modifier), "'%s' must not be " + modifier);
     }
 
     static <T extends Element> Rule<T> is(ElementKind kind) {
-        return of(e -> Elements2.is(e, kind), "'%s' must be " + kind);
+        return it(e -> Elements2.is(e, kind), "'%s' must be " + kind);
     }
 
     static <T extends Element> Rule<T> isNamed(String name) {
-        return of(e -> Elements2.isNamed(e, name), "'%s' must be named " + name);
+        return it(e -> Elements2.isNamed(e, name), "'%s' must be named " + name);
+    }
+
+    static <T extends Element> Rule<T> isNamedTesting(Predicate<? super String> namePredicate, String predicateDescription) {
+        return it(e -> Elements2.isNamedTesting(e, namePredicate), "'%s' must " + predicateDescription);
     }
 
     static <T extends Element> Rule<T> is(Element expected) {

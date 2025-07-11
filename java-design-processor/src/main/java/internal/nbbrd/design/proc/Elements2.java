@@ -3,13 +3,18 @@ package internal.nbbrd.design.proc;
 import javax.lang.model.element.*;
 import javax.lang.model.util.ElementFilter;
 import java.lang.annotation.Annotation;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 @lombok.experimental.UtilityClass
 public class Elements2 {
 
     public static boolean isNamed(Element e, String name) {
-        return e.getSimpleName().toString().equals(name);
+        return isNamedTesting(e, name::equals);
+    }
+
+    public static boolean isNamedTesting(Element e, Predicate<? super String> namePredicate) {
+        return namePredicate.test(e.getSimpleName().toString());
     }
 
     public static boolean is(Element e, Modifier modifier) {

@@ -32,7 +32,7 @@ import java.util.Set;
 
 import static internal.nbbrd.design.proc.Elements2.fieldsIn;
 import static internal.nbbrd.design.proc.Rule.is;
-import static internal.nbbrd.design.proc.Rule.of;
+import static internal.nbbrd.design.proc.Rule.it;
 import static javax.lang.model.element.Modifier.FINAL;
 
 /**
@@ -52,15 +52,15 @@ public final class DirectImplProcessor extends AbstractProcessor {
         return Processing.of(IS_DIRECT_IMPL).process(annotations, roundEnv, processingEnv);
     }
 
-    private static boolean extendAtLeastOneInterface(TypeElement type) {
+    private static boolean extendsAtLeastOneInterface(TypeElement type) {
         return !type.getInterfaces().isEmpty();
     }
 
-    private static boolean doNotExtendClass(TypeElement type) {
+    private static boolean doesNotExtendClass(TypeElement type) {
         return type.getSuperclass().toString().equals(Object.class.getName());
     }
 
-    private static boolean doNotContainPublicVars(TypeElement type) {
+    private static boolean doesNotContainPublicVars(TypeElement type) {
         return fieldsIn(type).noneMatch(DirectImplProcessor::isVariableNotStaticButPublic);
     }
 
@@ -72,7 +72,7 @@ public final class DirectImplProcessor extends AbstractProcessor {
 
     private static final Rule<TypeElement> IS_DIRECT_IMPL = Rule.on(TypeElement.class)
             .and(is(FINAL))
-            .and(of(DirectImplProcessor::doNotExtendClass, "'%s' may not extend another class"))
-            .and(of(DirectImplProcessor::doNotContainPublicVars, "'%s' may not contain public vars"))
-            .and(of(DirectImplProcessor::extendAtLeastOneInterface, "'%s' must extend at least one interface"));
+            .and(it(DirectImplProcessor::doesNotExtendClass, "'%s' may not extend another class"))
+            .and(it(DirectImplProcessor::doesNotContainPublicVars, "'%s' may not contain public vars"))
+            .and(it(DirectImplProcessor::extendsAtLeastOneInterface, "'%s' must extend at least one interface"));
 }

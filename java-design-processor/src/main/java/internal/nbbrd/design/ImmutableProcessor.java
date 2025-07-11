@@ -33,6 +33,7 @@ import java.util.stream.Stream;
 
 import static internal.nbbrd.design.proc.Elements2.fieldsIn;
 import static internal.nbbrd.design.proc.Rule.is;
+import static internal.nbbrd.design.proc.Rule.it;
 import static javax.lang.model.element.Modifier.*;
 
 /**
@@ -52,12 +53,12 @@ public final class ImmutableProcessor extends AbstractProcessor {
         return Processing.of(IS_IMMUTABLE).process(annotations, roundEnv, processingEnv);
     }
 
-    private static boolean areFieldsFinalOrLazy(TypeElement type) {
+    private static boolean hasFieldsFinalOrLazy(TypeElement type) {
         boolean lazy = type.getAnnotation(Immutable.class).lazy();
         return getNonStaticFields(type).allMatch(field -> field.getModifiers().contains(FINAL) || (lazy && field.getModifiers().contains(VOLATILE)));
     }
 
-    private static boolean areFieldsPrivate(TypeElement type) {
+    private static boolean hasFieldsPrivate(TypeElement type) {
         return getNonStaticFields(type).allMatch(field -> field.getModifiers().contains(PRIVATE));
     }
 
@@ -70,13 +71,9 @@ public final class ImmutableProcessor extends AbstractProcessor {
         return fieldsIn(type).filter(field -> !field.getModifiers().contains(STATIC));
     }
 
-    private static final Rule<TypeElement> ARE_FIELDS_FINAL_OR_LAZY = Rule.of(ImmutableProcessor::areFieldsFinalOrLazy, "Fields of '%s' must be final or lazy");
-    private static final Rule<TypeElement> ARE_FIELDS_PRIVATE = Rule.of(ImmutableProcessor::areFieldsPrivate, "Fields of '%s' must be private");
-    private static final Rule<TypeElement> HAS_LAZY_FIELD_IF_LAZY = Rule.of(ImmutableProcessor::hasLazyFieldIfLazy, "'%s' must have at least one lazy field");
-
     private static final Rule<TypeElement> IS_IMMUTABLE = Rule.on(TypeElement.class)
             .and(is(FINAL))
-            .and(ARE_FIELDS_FINAL_OR_LAZY)
-            .and(ARE_FIELDS_PRIVATE)
-            .and(HAS_LAZY_FIELD_IF_LAZY);
+            .and(it(ImmutableProcessor::hasFieldsFinalOrLazy, "Fields of '%s' must be final or lazy"))
+            .and(it(ImmutableProcessor::hasFieldsPrivate, "Fields of '%s' must be private"))
+            .and(it(ImmutableProcessor::hasLazyFieldIfLazy, "'%s' must have at least one lazy field"));
 }
