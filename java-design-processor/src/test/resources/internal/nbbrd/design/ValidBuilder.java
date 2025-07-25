@@ -1,7 +1,7 @@
 package internal.nbbrd.design;
 
 import nbbrd.design.BuilderPattern;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
