@@ -127,6 +127,39 @@ public class RepresentableProcessorTest {
         public void testCheckedException() {
             assertCheckedException("internal/nbbrd/design/RStringCheckedException.java");
         }
+
+        @Test
+        public void testShortFormatValid() {
+            assertValid("internal/nbbrd/design/RStringShortFormatValid.java");
+        }
+
+        @Test
+        public void testShortFormatMissing() {
+            JavaFileObject file = JavaFileObjects.forResource("internal/nbbrd/design/RStringShortFormatMissing.java");
+            Compilation compilation = compile(file);
+
+            CompilationSubject.assertThat(compilation)
+                    .failed();
+
+            assertThat(compilation)
+                    .hadErrorContaining("must have a short formatter")
+                    .inFile(file)
+                    .onLine(8);
+        }
+
+        @Test
+        public void testShortFormatStatic() {
+            JavaFileObject file = JavaFileObjects.forResource("internal/nbbrd/design/RStringShortFormatStatic.java");
+            Compilation compilation = compile(file);
+
+            CompilationSubject.assertThat(compilation)
+                    .failed();
+
+            assertThat(compilation)
+                    .hadErrorContaining("must not be static")
+                    .inFile(file)
+                    .onLine(8);
+        }
     }
 
     @Nested
