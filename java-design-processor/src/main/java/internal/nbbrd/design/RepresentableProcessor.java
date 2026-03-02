@@ -62,6 +62,8 @@ public final class RepresentableProcessor extends AbstractProcessor {
             .parseMethodName(RepresentableAsString::parseMethodName)
             .formatType(o -> String.class)
             .formatMethodName(RepresentableAsString::formatMethodName)
+            .hasShortFormat(RepresentableAsString::hasShortFormat)
+            .shortFormatMethodName(RepresentableAsString::shortFormatMethodName)
             .build();
 
     private static final Rule<TypeElement> IS_TYPE = RepresentableRule
@@ -101,6 +103,8 @@ public final class RepresentableProcessor extends AbstractProcessor {
         private final Function<A, Class<?>> formatType;
         private final Function<A, String> parseMethodName;
         private final Function<A, String> formatMethodName;
+        private final Function<A, Boolean> hasShortFormat;
+        private final Function<A, String> shortFormatMethodName;
 
         private boolean isNullOrEmpty(String name) {
             return name == null || name.isEmpty();
@@ -190,9 +194,43 @@ public final class RepresentableProcessor extends AbstractProcessor {
                     .and(hasNoCheckedException());
         }
 
+        private String hasShortFormatMethod(ProcessingEnvironment env, TypeElement type) {
+            if (hasShortFormat == null) {
+                return NO_ERROR;
+            }
+
+            A annotation = type.getAnnotation(annotationType);
+
+            if (!hasShortFormat.apply(annotation)) {
+                return NO_ERROR;
+            }
+
+            String methodName = shortFormatMethodName.apply(annotation);
+
+            if (isNullOrEmpty(methodName)) {
+                return NO_ERROR;
+            }
+
+            TypeMirror stringType = Processors.getTypeMirror(env, String.class);
+
+            List<ExecutableElement> methods = methodsIn(type)
+                    .filter(isNamed(methodName).asPredicate(env))
+                    .collect(Collectors.toList());
+
+            Rule<ExecutableElement> isShortFormatMethod = getIsFormatMethod(stringType);
+
+            switch (methods.size()) {
+                case 1:
+                    return isShortFormatMethod.check(env, methods.get(0));
+                default:
+                    return String.format(Locale.ROOT, "'%s' must have a short formatter", type);
+            }
+        }
+
         private final Rule<TypeElement> isRepresentableRule = Rule.on(TypeElement.class)
                 .and(this::hasParseMethod)
-                .and(this::hasFormatMethod);
+                .and(this::hasFormatMethod)
+                .and(this::hasShortFormatMethod);
 
         @Override
         public String check(ProcessingEnvironment env, TypeElement element) {

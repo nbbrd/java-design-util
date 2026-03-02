@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add support for short format method in RepresentableAsString annotation [#412](https://github.com/nbbrd/java-design-util/issues/412)
+
 ## [1.8.0] - 2025-07-25
 
 ### Added
