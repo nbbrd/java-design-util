@@ -34,7 +34,7 @@ java-design-parent (root POM)
 - **Package**: `nbbrd.design` (+ `nbbrd.design.swing`)
 - Pure annotation definitions — no runtime dependencies, no annotation processors
 - JPMS module name: `nbbrd.design` (via `Automatic-Module-Name` manifest entry)
-- All annotations use `@Retention(SOURCE)` except `@Internal` (`RUNTIME`), `@PrimitiveReplacementOf` and `@SystemDependent` (`CLASS`)
+- All annotations use `@Retention(SOURCE)` except `@Internal` (`RUNTIME`), `@PrimitiveReplacementOf`, `@SystemDependent`, `@RepresentableAs`, `@RepresentableAsInt` and `@RepresentableAsString` (`CLASS`)
 
 ### `java-design-processor`
 - **Public package**: `nbbrd.design.processor` (contains only a placeholder class for Javadoc)
