@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add SystemDependent annotation [#426](https://github.com/nbbrd/java-design-util/issues/426)
+
 ## [1.9.0] - 2026-03-02
 
 ### Added
