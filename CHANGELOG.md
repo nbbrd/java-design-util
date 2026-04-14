@@ -113,7 +113,7 @@ This release replaces the `StringValue` annotation with a more general approach 
 
 ### Changed
 
-- Migration to [Maven-Central](https://search.maven.org/search?q=g:com.github.nbbrd.java-design-util)
+- Migration to [Maven-Central](https://search.maven.org)
 - **Breaking change**: Maven groupId is now `com.github.nbbrd.java-design-util`
 
 ## [1.1.2] - 2021-01-07
