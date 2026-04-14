@@ -88,6 +88,11 @@ public class RepresentableProcessorTest {
         public void testCheckedException() {
             assertCheckedException("internal/nbbrd/design/RIntCheckedException.java");
         }
+
+        @Test
+        public void testInheritedFormatter() {
+            assertValid("internal/nbbrd/design/RIntInheritedFormatter.java");
+        }
     }
 
     @Nested
@@ -160,6 +165,16 @@ public class RepresentableProcessorTest {
                     .inFile(file)
                     .onLine(8);
         }
+
+        @Test
+        public void testInheritedFormatter() {
+            assertValid("internal/nbbrd/design/RStringInheritedFormatter.java");
+        }
+
+        @Test
+        public void testInheritedShortFormat() {
+            assertValid("internal/nbbrd/design/RStringInheritedShortFormat.java");
+        }
     }
 
     @Nested
@@ -198,6 +213,16 @@ public class RepresentableProcessorTest {
         @Test
         public void testCheckedException() {
             assertCheckedException("internal/nbbrd/design/RObjectCheckedException.java");
+        }
+
+        @Test
+        public void testInheritedFormatter() {
+            assertValid("internal/nbbrd/design/RObjectInheritedFormatter.java");
+        }
+
+        @Test
+        public void testInheritedFormatterFromInterface() {
+            assertValid("internal/nbbrd/design/RObjectInheritedFormatterFromInterface.java");
         }
     }
 
