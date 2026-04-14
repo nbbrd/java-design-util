@@ -25,7 +25,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static internal.nbbrd.design.proc.Elements2.methodsIn;
+import static internal.nbbrd.design.proc.Elements2.allMethodsIn;
 import static internal.nbbrd.design.proc.ExecutableRules.*;
 import static internal.nbbrd.design.proc.Rule.*;
 import static javax.lang.model.element.Modifier.PUBLIC;
@@ -129,7 +129,7 @@ public final class RepresentableProcessor extends AbstractProcessor {
 
             String methodName = getParseMethodName(annotation);
 
-            List<ExecutableElement> methods = methodsIn(type)
+            List<ExecutableElement> methods = allMethodsIn(type, env)
                     .filter(isNamed(methodName).asPredicate(env))
                     .collect(Collectors.toList());
 
@@ -171,7 +171,7 @@ public final class RepresentableProcessor extends AbstractProcessor {
             TypeMirror formatTypeMirror = getTypeMirror(env, annotation, formatType);
             String methodName = getFormatMethodName(formatTypeMirror, annotation);
 
-            List<ExecutableElement> methods = methodsIn(type)
+            List<ExecutableElement> methods = allMethodsIn(type, env)
                     .filter(isNamed(methodName).asPredicate(env))
                     .collect(Collectors.toList());
 
@@ -213,7 +213,7 @@ public final class RepresentableProcessor extends AbstractProcessor {
 
             TypeMirror stringType = Processors.getTypeMirror(env, String.class);
 
-            List<ExecutableElement> methods = methodsIn(type)
+            List<ExecutableElement> methods = allMethodsIn(type, env)
                     .filter(isNamed(methodName).asPredicate(env))
                     .collect(Collectors.toList());
 

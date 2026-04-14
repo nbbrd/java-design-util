@@ -1,5 +1,6 @@
 package internal.nbbrd.design.proc;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.*;
 import javax.lang.model.util.ElementFilter;
 import java.lang.annotation.Annotation;
@@ -35,6 +36,10 @@ public class Elements2 {
 
     public static Stream<ExecutableElement> methodsIn(TypeElement type) {
         return ElementFilter.methodsIn(type.getEnclosedElements()).stream();
+    }
+
+    public static Stream<ExecutableElement> allMethodsIn(TypeElement type, ProcessingEnvironment env) {
+        return ElementFilter.methodsIn(env.getElementUtils().getAllMembers(type)).stream();
     }
 
     public static Stream<VariableElement> fieldsIn(TypeElement type) {

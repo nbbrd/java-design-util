@@ -43,7 +43,7 @@ import java.lang.annotation.Target;
  * @author Philippe Charles
  */
 @Target({ElementType.TYPE})
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.CLASS)
 public @interface RepresentableAsString {
 
     /**

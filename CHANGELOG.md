@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.10.0] - 2026-04-14
+
+This release adds a new annotation to document system-dependent methods, improves Representable* annotations for external processing, and fixes inherited method lookup in the Representable* processor.
+
+### Added
+
+- Add SystemDependent annotation [#426](https://github.com/nbbrd/java-design-util/issues/426)
+
+### Changed
+
+- Modify Representable* annotations retention to CLASS to enable external processing [#427](https://github.com/nbbrd/java-design-util/issues/427)
+
+### Fixed
+
+- Fix search for format method in Representable* processor [#421](https://github.com/nbbrd/java-design-util/issues/421)
+
 ## [1.9.0] - 2026-03-02
 
 ### Added
@@ -105,7 +121,7 @@ This release replaces the `StringValue` annotation with a more general approach 
 
 ### Changed
 
-- Migration to [Maven-Central](https://search.maven.org/search?q=g:com.github.nbbrd.java-design-util)
+- Migration to [Maven-Central](https://search.maven.org)
 - **Breaking change**: Maven groupId is now `com.github.nbbrd.java-design-util`
 
 ## [1.1.2] - 2021-01-07
@@ -131,7 +147,8 @@ This release replaces the `StringValue` annotation with a more general approach 
 
 - Initial release
 
-[Unreleased]: https://github.com/nbbrd/java-design-util/compare/v1.9.0...HEAD
+[Unreleased]: https://github.com/nbbrd/java-design-util/compare/v1.10.0...HEAD
+[1.10.0]: https://github.com/nbbrd/java-design-util/compare/v1.9.0...v1.10.0
 [1.9.0]: https://github.com/nbbrd/java-design-util/compare/v1.8.0...v1.9.0
 [1.8.0]: https://github.com/nbbrd/java-design-util/compare/v1.7.0...v1.8.0
 [1.7.0]: https://github.com/nbbrd/java-design-util/compare/v1.6.0...v1.7.0

@@ -5,7 +5,7 @@
 
     <groupId>com.github.nbbrd.java-design-util</groupId>
     <artifactId>java-design-parent</artifactId>
-    <version>1.9.0</version>
+    <version>1.10.0</version>
     <packaging>pom</packaging>
 
     <name>java-design</name>
@@ -38,7 +38,7 @@
     <properties>
         <!-- Java 8+ config -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.build.outputTimestamp>2026-03-02T13:32:05Z</project.build.outputTimestamp>
+        <project.build.outputTimestamp>2026-04-14T15:08:08Z</project.build.outputTimestamp>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
         <requiredMavenVersion>3.9.11</requiredMavenVersion>
@@ -109,7 +109,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
-                    <version>3.4.0</version>
+                    <version>3.5.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -135,7 +135,7 @@
                 <plugin>
                     <groupId>org.gaul</groupId>
                     <artifactId>modernizer-maven-plugin</artifactId>
-                    <version>3.2.0</version>
+                    <version>3.3.0</version>
                 </plugin>
                 <plugin>
                     <groupId>de.thetaphi</groupId>
@@ -145,7 +145,7 @@
                 <plugin>
                     <groupId>com.github.nbbrd.heylogs</groupId>
                     <artifactId>heylogs-maven-plugin</artifactId>
-                    <version>0.14.1</version>
+                    <version>0.17.1</version>
                 </plugin>
                 <plugin>
                     <groupId>com.amashchenko.maven.plugin</groupId>
@@ -180,7 +180,7 @@
                 <plugin>
                     <groupId>org.jreleaser</groupId>
                     <artifactId>jreleaser-maven-plugin</artifactId>
-                    <version>1.22.0</version>
+                    <version>1.23.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -197,20 +197,19 @@
                         <inherited>false</inherited>
                     </execution>
                 </executions>
-                <configuration>
-                    <versioning>semver</versioning>
-                    <tagging>prefix:v</tagging>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <properties>
-                        <!-- Enable parallel execution of junit5 tests -->
+                        <!-- Enable parallel execution of junit tests -->
                         <configurationParameters>
                             junit.jupiter.execution.parallel.enabled=true
                             junit.jupiter.execution.parallel.mode.default=concurrent
+                            junit.jupiter.execution.parallel.mode.classes.default=concurrent
+                            junit.jupiter.execution.parallel.config.strategy=dynamic
+                            junit.jupiter.execution.parallel.config.dynamic.max-pool-size-factor=4
                         </configurationParameters>
                     </properties>
                 </configuration>
@@ -258,7 +257,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
+                        <configuration combine.self="append">
                             <useModulePath>false</useModulePath>
                         </configuration>
                     </plugin>
@@ -275,8 +274,8 @@
                 </property>
             </activation>
             <properties>
-                <lombok.version>1.18.42</lombok.version>
-                <java-service.version>1.9.0</java-service.version>
+                <lombok.version>1.18.44</lombok.version>
+                <java-service.version>2.0.0</java-service.version>
             </properties>
             <dependencyManagement>
                 <dependencies>
@@ -413,7 +412,7 @@
                             <dependency>
                                 <groupId>org.codehaus.mojo</groupId>
                                 <artifactId>extra-enforcer-rules</artifactId>
-                                <version>1.11.0</version>
+                                <version>1.12.0</version>
                             </dependency>
                         </dependencies>
                         <executions>
