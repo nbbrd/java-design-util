@@ -16,6 +16,7 @@
  */
 package nbbrd.design;
 
+import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -28,6 +29,7 @@ import java.util.function.IntSupplier;
  */
 @Target({ElementType.TYPE, ElementType.PACKAGE})
 @Retention(RetentionPolicy.SOURCE)
+@Documented
 @Development(status = Development.Status.Alpha)
 public @interface Development {
 
