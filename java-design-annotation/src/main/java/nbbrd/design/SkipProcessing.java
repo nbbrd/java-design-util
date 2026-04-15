@@ -17,6 +17,7 @@
 package nbbrd.design;
 
 import java.lang.annotation.Annotation;
+import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -27,6 +28,7 @@ import java.lang.annotation.RetentionPolicy;
  * @author Philippe Charles
  */
 @Retention(RetentionPolicy.SOURCE)
+@Documented
 public @interface SkipProcessing {
 
     Class<? extends Annotation> target();
