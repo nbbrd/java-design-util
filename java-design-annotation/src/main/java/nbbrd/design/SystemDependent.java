@@ -35,9 +35,8 @@ import java.lang.annotation.*;
  *
  * @author Philippe Charles
  */
-@Target({ElementType.METHOD, ElementType.CONSTRUCTOR})
+@Target({ElementType.TYPE, ElementType.FIELD, ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.LOCAL_VARIABLE, ElementType.ANNOTATION_TYPE, ElementType.PACKAGE, ElementType.TYPE_PARAMETER, ElementType.TYPE_USE})
 @Retention(RetentionPolicy.CLASS)
 @Documented
 public @interface SystemDependent {
 }
-

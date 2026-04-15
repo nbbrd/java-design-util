@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix SystemDependent annotation target
+
 ## [1.10.0] - 2026-04-14
 
 This release adds a new annotation to document system-dependent methods, improves Representable* annotations for external processing, and fixes inherited method lookup in the Representable* processor.
