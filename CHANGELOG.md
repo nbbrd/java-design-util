@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.10.1] - 2026-04-15
+
 ### Fixed
 
 - Fix SystemDependent annotation target
@@ -152,7 +154,8 @@ This release replaces the `StringValue` annotation with a more general approach 
 
 - Initial release
 
-[Unreleased]: https://github.com/nbbrd/java-design-util/compare/v1.10.0...HEAD
+[Unreleased]: https://github.com/nbbrd/java-design-util/compare/v1.10.1...HEAD
+[1.10.1]: https://github.com/nbbrd/java-design-util/compare/v1.10.0...v1.10.1
 [1.10.0]: https://github.com/nbbrd/java-design-util/compare/v1.9.0...v1.10.0
 [1.9.0]: https://github.com/nbbrd/java-design-util/compare/v1.8.0...v1.9.0
 [1.8.0]: https://github.com/nbbrd/java-design-util/compare/v1.7.0...v1.8.0
