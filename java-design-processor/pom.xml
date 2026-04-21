@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.github.nbbrd.java-design-util</groupId>
         <artifactId>java-design-parent</artifactId>
-        <version>1.10.1</version>
+        <version>1.10.2</version>
     </parent>
 
     <artifactId>java-design-processor</artifactId>
@@ -97,7 +97,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>33.5.0-jre</version>
+            <version>33.6.0-jre</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
