@@ -40,6 +40,7 @@ import static javax.lang.model.element.Modifier.STATIC;
 })
 public final class RepresentableProcessor extends AbstractProcessor {
 
+    @SuppressWarnings("deprecation")
     private static final Rule<TypeElement> IS_STRING_VALUE = RepresentableRule
             .builder(StringValue.class)
             .parseType(o -> CharSequence.class)
@@ -178,10 +179,14 @@ public final class RepresentableProcessor extends AbstractProcessor {
             Rule<ExecutableElement> isFormatMethod = getIsFormatMethod(formatTypeMirror);
 
             switch (methods.size()) {
+                case 0:
+                    return String.format(Locale.ROOT, "'%s' must have a formatter", type);
                 case 1:
                     return isFormatMethod.check(env, methods.get(0));
                 default:
-                    return String.format(Locale.ROOT, "'%s' must have a formatter", type);
+                    return methods.stream().anyMatch(isFormatMethod.asPredicate(env))
+                            ? NO_ERROR
+                            : String.format(Locale.ROOT, "'%s' must have a formatter", type);
             }
         }
 
@@ -220,10 +225,14 @@ public final class RepresentableProcessor extends AbstractProcessor {
             Rule<ExecutableElement> isShortFormatMethod = getIsFormatMethod(stringType);
 
             switch (methods.size()) {
+                case 0:
+                    return String.format(Locale.ROOT, "'%s' must have a short formatter", type);
                 case 1:
                     return isShortFormatMethod.check(env, methods.get(0));
                 default:
-                    return String.format(Locale.ROOT, "'%s' must have a short formatter", type);
+                    return methods.stream().anyMatch(isShortFormatMethod.asPredicate(env))
+                            ? NO_ERROR
+                            : String.format(Locale.ROOT, "'%s' must have a short formatter", type);
             }
         }
 

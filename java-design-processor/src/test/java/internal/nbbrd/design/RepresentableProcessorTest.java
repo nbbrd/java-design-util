@@ -93,6 +93,11 @@ public class RepresentableProcessorTest {
         public void testInheritedFormatter() {
             assertValid("internal/nbbrd/design/RIntInheritedFormatter.java");
         }
+
+        @Test
+        public void testOverrideFormatter() {
+            assertValid("internal/nbbrd/design/RIntOverrideFormatter.java");
+        }
     }
 
     @Nested
@@ -172,8 +177,18 @@ public class RepresentableProcessorTest {
         }
 
         @Test
+        public void testOverrideFormatter() {
+            assertValid("internal/nbbrd/design/RStringOverrideFormatter.java");
+        }
+
+        @Test
         public void testInheritedShortFormat() {
             assertValid("internal/nbbrd/design/RStringInheritedShortFormat.java");
+        }
+
+        @Test
+        public void testOverrideShortFormat() {
+            assertValid("internal/nbbrd/design/RStringOverrideShortFormat.java");
         }
     }
 
@@ -223,6 +238,11 @@ public class RepresentableProcessorTest {
         @Test
         public void testInheritedFormatterFromInterface() {
             assertValid("internal/nbbrd/design/RObjectInheritedFormatterFromInterface.java");
+        }
+
+        @Test
+        public void testOverrideFormatter() {
+            assertValid("internal/nbbrd/design/RObjectOverrideFormatter.java");
         }
     }
 
