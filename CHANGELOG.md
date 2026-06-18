@@ -71,13 +71,13 @@ This release adds a new annotation to document system-dependent methods, improve
 
 ## [1.5.1] - 2024-03-27
 
-### Fixed
-
-- Fix check on multiple representations [#221](https://github.com/nbbrd/java-design-util/issues/221)
-
 ### Changed
 
 - Change `@VisibleForTesting` annotation retention to `SOURCE`
+
+### Fixed
+
+- Fix check on multiple representations [#221](https://github.com/nbbrd/java-design-util/issues/221)
 
 ## [1.5.0] - 2023-10-11
 
